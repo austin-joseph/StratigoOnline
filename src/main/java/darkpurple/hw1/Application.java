@@ -1,4 +1,4 @@
-package hello;
+package darkpurple.hw1;
 
 import java.util.Arrays;
 
