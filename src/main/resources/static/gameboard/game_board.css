@@ -1,0 +1,59 @@
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#gameboard-table {
+    width: 600px;
+    height: 600px;
+    border-collapse: collapse;
+}
+
+.gameboard-vertMarker {
+    background-color: orange;
+    width: 4%;
+    height: 8%;
+    border-style: inset;
+    text-align: center;
+}
+
+.gameboard-horiMarker {
+    background-color: orange;
+    width: 8%;
+    height: 4%;
+    border-style: inset;
+    text-align: center;
+}
+
+.gameboard-cornerMarker {
+    background-color: red;
+    border-style: inset;
+}
+
+.gameboard-cell {
+    background-color: white;
+    border-style: inset;
+    text-align: center;
+    font-size: 100%;
+    margin: 0;
+}
+
+.border {
+    border-style: inset;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+									supported by Chrome and Opera */
+}
