@@ -24,12 +24,13 @@
   border-style: inset;
   text-align: center;
 }
-
 .gameboard-cornerMarker {
-  background-color: red;
+  background-color: darkgoldenrod;
   border-style: inset;
 }
-
+.gameboard-transparent {
+    color: red
+  }
 .gameboard-cell {
   border-style: inset;
   text-align: center;

@@ -82,17 +82,11 @@ class Game {
             if (game.currentlyHilightedCell != null) {
                 $("#" + game.currentlyHilightedCell).addClass("gameboard-selected");
             }
-            if(game.phase.onCellClicked != null) {
+            if (game.phase.onCellClicked != null) {
                 game.phase.onCellClicked(id);
             }
         }
     }
-}
-class Phase {
-    constructor() { }
-    onKeyPress(event) { };
-    onCellClicked(id) { };
-    finishPhase() { };
 }
 class SetupPhase {
     constructor() {
@@ -100,6 +94,7 @@ class SetupPhase {
         this.keyTracker = {};
         this.keyTracker["F"] = 1;
         this.keyTracker["B"] = 6;
+        this.keyTracker["0"] = 1;//Marshal
         this.keyTracker["1"] = 1;//The Spy
         this.keyTracker["2"] = 8;//The scout
         this.keyTracker["3"] = 5;//The Miner
@@ -109,38 +104,41 @@ class SetupPhase {
         this.keyTracker["7"] = 3;//Major
         this.keyTracker["8"] = 2;//Colonel
         this.keyTracker["9"] = 1;//General
-        this.keyTracker["10"] = 1;//Marshal
         this.keyTracker[""] = 40;//Blank Space
         this.createInfoSection();
     }
     onKeyPress(event) {
         if (event.key == "Enter") {
             game.phase.attemptStartGame();
+            game.phase.finishPhase();
         } else if (event.key.toUpperCase() == "B" || event.key.toUpperCase() == "F") {
-            game.phase.placePieceAt(event.key.toUpperCase(), game.currentlyHilightedCell);
+            if (game.currentlyHilightedCell != null)game.phase.placePieceAt(event.key.toUpperCase(), game.currentlyHilightedCell);
             // game.phase.lastPressedKey = event.key
         } else {
-            if (event.key >= "0" && event.key <= "9") {                
-                game.phase.placePieceAt((event.key == "0") ? "10" : event.key, game.currentlyHilightedCell);
+            if (event.key >= "0" && event.key <= "9") {
+                if (game.currentlyHilightedCell != null)  game.phase.placePieceAt(event.key, game.currentlyHilightedCell);
                 // game.phase.lastPressedKey = (value == 0) ? "10" : ("" + value);
             }
         }
     }
     attemptStartGame() {
+        var leftOver = 0;
         for (var i in this.keyTracker) {
-            if (this.keyTracker[i] != 0 || i == "") {
-                return false;
+            if (this.keyTracker[i] != 0 && i != "") {
+                leftOver += this.keyTracker[i];
             }
         }
-        this.finishPhase();
-        return true;
+        if (leftOver == 0) {
+            this.finishPhase();
+        }
     }
     placePieceAt(piece, cell) {
-        //Dont allow if they try to place something into the impassible cells
-        // if (cell == "C5" || cell == "C6" || cell == "D5" || cell == "D6" ||
-        //     cell == "G5" || cell == "G6" || cell == "H5" || cell == "H6") {
-        //     return false;
-        // }
+        //Dont allow if they try to place something into the impassible cells or on the enemy side.
+
+        var row = cell.substring(0, 1);
+        if (row < 7) {
+            return;
+        }
         //Determine what type of piece is in the existing square.
         var existingKey = $("#" + cell).html();
 
@@ -151,9 +149,9 @@ class SetupPhase {
                 this.keyTracker[existingKey] = this.keyTracker[existingKey] + 1;
                 this.keyTracker[piece] = this.keyTracker[piece] - 1;
 
-                if(existingKey == "") {                    
-            $("#" + cell).removeClass("gameboard-empty");
-            $("#" + cell).addClass("gameboard-player");
+                if (existingKey == "") {
+                    $("#" + cell).removeClass("gameboard-empty");
+                    $("#" + cell).addClass("gameboard-player");
                 }
                 $("#" + cell).html(piece);
             }
@@ -181,8 +179,13 @@ class SetupPhase {
         }
     }
     finishPhase() {
-        //Populate the baord with the opponents pieces.
-        //
+        // Populate the opponents side of the board with pieces.
+
+        for (var row = 1; row <= 4; row++) {
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                $("#" + row + column).addClass("gameboard-enemy gameboard-transparent");
+            }
+        }
         game.phase = new PlayPhase(this);
     }
 }
@@ -190,7 +193,6 @@ class PlayPhase {
     constructor() {
         this.selectedSquare = null;
     }
-
     onCellClicked(id) {
         if (this.selectedSquare == null) {
             this.selectedSquare = id;
