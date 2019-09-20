@@ -1,8 +1,14 @@
+//This all starts with the jQuery on document ready function at the bottom of the document.
+
+//The game board is generated usign HTML because it allows easy changes to the code without having to make many repetive changes to the html directly. All that has to be modified is the template and the entire board relfects those chagnes. 
 function createGameBoard() {
+    //These are the letters that server as the column names on the board. There is a space in the beginning and end so that there is space for the columns that hold the row markers.
     var letters = " ABCDEFGHIJ ";
+    //I use jQuery to modify the DOM to make it easy to add elements programically.
     var table = $($.parseHTML("<table id=\"gameboard-table\" class=\"center\"></table>"));
     var thead = $($.parseHTML("<thead></thead>"));
-    //Create the letters
+
+    //Create the columns as part of a thead element
     for (var i = 0; i < letters.length; i++) {
         var charAt = letters.charAt(i);
         if (charAt == ' ') {
@@ -11,6 +17,7 @@ function createGameBoard() {
             thead.append($($.parseHTML("<th class=\"gameboard-horiMarker\">" + letters.charAt(i) + "</th>")));
         }
     }
+    //Create the body and make sure each part has the correct classes so they can be styled correctly
     var tbody = $($.parseHTML("<tbody></tbody>"));
     for (var numbers = 0; numbers < 10; numbers++) {
         var output = $($.parseHTML("<tr></tr>"));
@@ -20,15 +27,23 @@ function createGameBoard() {
             if (charAt == ' ') {
                 row = $($.parseHTML("<th class=\"gameboard-vertMarker\">" + (numbers + 1) + "</th>"));
             } else {
-                row = $($.parseHTML("<td class=\"gameboard-cell\" id=\"" + ((numbers + 1) + charAt) + "\"></td>"));
+                if ((numbers == 4 || numbers == 5) && (charAt == "C" || charAt == "D" || charAt == "G" || charAt == "H")) {
+
+                    row = $($.parseHTML("<td class=\"gameboard-cell gameboard-impassable\" id=\"" + ((numbers + 1) + charAt) + "\"></td>"));
+                } else {
+
+                    row = $($.parseHTML("<td class=\"gameboard-cell gameboard-empty\" id=\"" + ((numbers + 1) + charAt) + "\"></td>"));
+                }
                 row.click(this.onCellClicked);
             }
             output.append(row);
         }
         tbody.append(output);
     }
+    //Actually add the elements to the DOM now that we've created them
     table.append(thead);
     table.append(tbody);
+    //We have to actually make a clone of the thead cause otherwise we would move the thead we created from the top of the document to the bottom.
     table.append(thead.clone());
     $("#gameboard").append(table);
 }
@@ -47,17 +62,32 @@ function onCellClicked(e) {
 }
 class Game {
     constructor() {
-        this.currentTurn = 0;
+        var prevHilightedCell = null;
+        var currentlyHilightedCell = null;
     }
     begin() {
         this.phase = new SetupPhase(this);
         document.addEventListener('keydown', this.phase.onKeyPress);
     }
     onCellClicked(id) {
-        this.phase.onCellClicked(id);
+        if (!$("#" + id).hasClass("gameboard-impassable")) {
+
+            //Remove previous hilight
+            if (game.currentlyHilightedCell != null) {
+                $("#" + game.currentlyHilightedCell).removeClass("gameboard-selected");
+            }
+            game.prevHilightedCell = game.currentlyHilightedCell;
+            game.currentlyHilightedCell = id;
+            //Add new hilight
+            if (game.currentlyHilightedCell != null) {
+                $("#" + game.currentlyHilightedCell).addClass("gameboard-selected");
+            }
+            if(game.phase.onCellClicked != null) {
+                game.phase.onCellClicked(id);
+            }
+        }
     }
 }
-
 class Phase {
     constructor() { }
     onKeyPress(event) { };
@@ -66,7 +96,7 @@ class Phase {
 }
 class SetupPhase {
     constructor() {
-        this.lastPressedKey = "10";
+        // this.lastPressedKey = null;
         this.keyTracker = {};
         this.keyTracker["F"] = 1;
         this.keyTracker["B"] = 6;
@@ -80,51 +110,62 @@ class SetupPhase {
         this.keyTracker["8"] = 2;//Colonel
         this.keyTracker["9"] = 1;//General
         this.keyTracker["10"] = 1;//Marshal
+        this.keyTracker[""] = 40;//Blank Space
         this.createInfoSection();
     }
     onKeyPress(event) {
-        if (event.key == "B" || event.key == "F") {
-            game.phase.lastPressedKey = event.key
+        if (event.key == "Enter") {
+            game.phase.attemptStartGame();
+        } else if (event.key.toUpperCase() == "B" || event.key.toUpperCase() == "F") {
+            game.phase.placePieceAt(event.key.toUpperCase(), game.currentlyHilightedCell);
+            // game.phase.lastPressedKey = event.key
         } else {
-            var value = parseInt(event.key);
-            if (value >= 0 && value <= 9) {
-                game.phase.lastPressedKey = (value == 0) ? "10" : ("" + value);
+            if (event.key >= "0" && event.key <= "9") {                
+                game.phase.placePieceAt((event.key == "0") ? "10" : event.key, game.currentlyHilightedCell);
+                // game.phase.lastPressedKey = (value == 0) ? "10" : ("" + value);
             }
         }
     }
-    onCellClicked(id) {
-        if (this.lastPressedKey != null && this.canPlace(this.lastPressedKey, id) == true) {
-            $("#" + id).html(this.lastPressedKey);
-            this.updateInfoSection();
+    attemptStartGame() {
+        for (var i in this.keyTracker) {
+            if (this.keyTracker[i] != 0 || i == "") {
+                return false;
+            }
         }
+        this.finishPhase();
+        return true;
     }
-    canPlace(key, cell) {
-        //The player clicks on a cell that is empty. Check if they have enough of that piece left to place, if so add the piece
-
-        //The player is clicking on an already existing piece, add back another of the removed piece to the reserve and remove the 
+    placePieceAt(piece, cell) {
+        //Dont allow if they try to place something into the impassible cells
+        // if (cell == "C5" || cell == "C6" || cell == "D5" || cell == "D6" ||
+        //     cell == "G5" || cell == "G6" || cell == "H5" || cell == "H6") {
+        //     return false;
+        // }
+        //Determine what type of piece is in the existing square.
         var existingKey = $("#" + cell).html();
-        console.log(existingKey);
-        if (existingKey == "" && this.keyTracker[key] > 0) {
-            this.keyTracker[key] = this.keyTracker[key] - 1;
-            $("#" + cell).html(key);
-            return true;
-        } else if (existingKey != null && existingKey != key) {
 
-            if (this.keyTracker[key] > 0) {
-
+        //The player clicks on a cell that is empty. Check if they have enough of that piece left to place, if so add the piece
+        //The player is clicking on an already existing piece, add back another of the removed piece to the reserve and remove the          
+        if (existingKey != null && existingKey != piece) {
+            if (this.keyTracker[piece] > 0) {
                 this.keyTracker[existingKey] = this.keyTracker[existingKey] + 1;
-                this.keyTracker[key] = this.keyTracker[key] - 1;
-                $("#" + cell).html(key);
-                return true;
+                this.keyTracker[piece] = this.keyTracker[piece] - 1;
+
+                if(existingKey == "") {                    
+            $("#" + cell).removeClass("gameboard-empty");
+            $("#" + cell).addClass("gameboard-player");
+                }
+                $("#" + cell).html(piece);
             }
         }
-        return false;
+        this.updateInfoSection();
     }
+
     createInfoSection() {
-        var tbody =  $("#info-table");
+        var tbody = $("#info-table");
         var tr1 = $($.parseHTML("<tr></tr>"));
         var tr2 = $($.parseHTML("<tr id=\"info-row2\"></tr>"));
-        for(var i in this.keyTracker) {
+        for (var i in this.keyTracker) {
 
             tr1.append($($.parseHTML("<th>" + i + "</th>")));
             tr2.append($($.parseHTML("<td>" + this.keyTracker[i] + "</td>")));
@@ -133,15 +174,15 @@ class SetupPhase {
         tbody.append(tr2);
     }
     updateInfoSection() {
-
-        var row =  $("#info-row2");
+        var row = $("#info-row2");
         row.html("");
-        for(var i in this.keyTracker) {
+        for (var i in this.keyTracker) {
             row.append($($.parseHTML("<td>" + this.keyTracker[i] + "</td>")));
         }
     }
     finishPhase() {
-        //Transition the info section to whatever the PlayPhase needs
+        //Populate the baord with the opponents pieces.
+        //
         game.phase = new PlayPhase(this);
     }
 }
@@ -175,6 +216,8 @@ class PlayPhase {
         game.phase = new PlayPhase(this);
     }
 }
+
+//When everything has finished loading we add the board to the DOM then start our javascript game code.
 $(document).ready(function () {
     createGameBoard();
     startGame();

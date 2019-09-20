@@ -10,4 +10,8 @@ nbdist/
 .gradle
 .idea
 gradle
-
+.classpath
+.project
+**/.vscode
+.settings
+bin
