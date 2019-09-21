@@ -104,19 +104,25 @@ class SetupPhase {
         this.keyTracker["7"] = 3;//Major
         this.keyTracker["8"] = 2;//Colonel
         this.keyTracker["9"] = 1;//General
-        this.keyTracker[""] = 40;//Blank Space
+        this.keyTracker[""] = 0;//Blank Space
         this.createInfoSection();
     }
     onKeyPress(event) {
         if (event.key == "Enter") {
             game.phase.attemptStartGame();
             game.phase.finishPhase();
+        } else if (event.key == "Delete") {
+            if (game.currentlyHilightedCell != null) { 
+                game.phase.placePieceAt("", game.currentlyHilightedCell); 
+            }
         } else if (event.key.toUpperCase() == "B" || event.key.toUpperCase() == "F") {
-            if (game.currentlyHilightedCell != null)game.phase.placePieceAt(event.key.toUpperCase(), game.currentlyHilightedCell);
+            if (game.currentlyHilightedCell != null) { 
+                game.phase.placePieceAt(event.key.toUpperCase(), game.currentlyHilightedCell); 
+            }
             // game.phase.lastPressedKey = event.key
         } else {
             if (event.key >= "0" && event.key <= "9") {
-                if (game.currentlyHilightedCell != null)  game.phase.placePieceAt(event.key, game.currentlyHilightedCell);
+                if (game.currentlyHilightedCell != null) game.phase.placePieceAt(event.key, game.currentlyHilightedCell);
                 // game.phase.lastPressedKey = (value == 0) ? "10" : ("" + value);
             }
         }
