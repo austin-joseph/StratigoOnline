@@ -110,7 +110,6 @@ class SetupPhase {
     onKeyPress(event) {
         if (event.key == "Enter") {
             game.phase.attemptStartGame();
-            game.phase.finishPhase();
         } else if (event.key == "Delete") {
             if (game.currentlyHilightedCell != null) { 
                 game.phase.placePieceAt("", game.currentlyHilightedCell); 

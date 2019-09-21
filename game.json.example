@@ -1,0 +1,23 @@
+{
+	"player1":"player1",
+	"player2": "player2",
+	/*a unique identifer for each player. Can be username email or whatever*/
+	"results": {
+		"winner":"player1" 
+	/*either player 1 player 2 or null of no one won. Can also be an error code if the game didnt complete normally */	
+	},
+	"board":{
+		"starting_state": {"1A":"B",
+							"1B":"F",
+							"1C":"9",
+							...
+			/*until we cover every piece on the board*/
+			/*This is a json object that has a map of every square to the piece in that square. We can tell what team the piece belongs to based on its position.*/
+		},
+		"moves":[
+			["1A", "5A", "9"],
+			["9A","5A", "B"],
+			/*A list of all of moves for both players. It contains the starting position and the ending position and what piece was in that position after the action occured.*/
+		]
+	}
+}
