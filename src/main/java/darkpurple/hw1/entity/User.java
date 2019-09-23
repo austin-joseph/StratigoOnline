@@ -24,7 +24,6 @@ public class User {
     @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     private String email;
     private String password;
-    private String fullname;
     private boolean enabled;
     @DBRef
     private Set<Role> roles;
@@ -39,10 +38,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getFullname() {
-        return fullname;
     }
 
     public boolean isEnabled() {
@@ -65,9 +60,6 @@ public class User {
         this.password = password;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
