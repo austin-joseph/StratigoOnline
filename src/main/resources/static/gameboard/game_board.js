@@ -71,7 +71,6 @@ class Game {
     }
     onCellClicked(id) {
         if (!$("#" + id).hasClass("gameboard-impassable")) {
-
             //Remove previous hilight
             if (game.currentlyHilightedCell != null) {
                 $("#" + game.currentlyHilightedCell).removeClass("gameboard-selected");
@@ -110,7 +109,9 @@ class SetupPhase {
     onKeyPress(event) {
         if (event.key == "Enter") {
             game.phase.attemptStartGame();
-        } else if (event.key == "Delete") {
+        } else if (event.key == "End") {
+            game.phase.finishPhase();
+        }else if (event.key == "Delete") {
             if (game.currentlyHilightedCell != null) { 
                 game.phase.placePieceAt("", game.currentlyHilightedCell); 
             }
@@ -157,8 +158,12 @@ class SetupPhase {
                 if (existingKey == "") {
                     $("#" + cell).removeClass("gameboard-empty");
                     $("#" + cell).addClass("gameboard-player");
+                }else if(piece == "") {
+                    $("#" + cell).removeClass("gameboard-player");
+                    $("#" + cell).addClass("gameboard-empty");
                 }
                 $("#" + cell).html(piece);
+                
             }
         }
         this.updateInfoSection();
@@ -191,42 +196,40 @@ class SetupPhase {
                 $("#" + row + column).addClass("gameboard-enemy gameboard-transparent");
             }
         }
-        game.phase = new PlayPhase(this);
+        game.phase = new PlayPhase();
     }
 }
 class PlayPhase {
     constructor() {
-        this.selectedSquare = null;
     }
     onCellClicked(id) {
-        if (this.selectedSquare == null) {
-            this.selectedSquare = id;
-        } else if (this.selectedSquare != id) {
 
-            if (canMoveTo(this.selectedSquare, id)) {
-                move(this.selectedSquare, id)
-                this.selectedSquare = null;
+        if(game.prevHilightedCell != null && game.currentlyHilightedCell != null) {
+            if (move(game.prevHilightedCell, game.currentlyHilightedCell)) {
+                game.phase.attemptEndGame();
                 aiTurn();
             }
         }
     }
-    canMoveTo(startCell, endCell) {
+    move(startCell, endCell) {
         return true;
-    }
-    canMoveTo(startCell, endCell) {
-
     }
     aiTurn() {
 
     }
+    attemptEndGame() {
+        //See if some body won or if a draw has happened. If so change the phase 
+    }
     finishPhase() {
-        game.phase = new PlayPhase(this);
+        game.phase = new EndPhase(this);
     }
 }
-
+class EndPhase {
+    constructor() {
+    }
+}
 //When everything has finished loading we add the board to the DOM then start our javascript game code.
 $(document).ready(function () {
     createGameBoard();
     startGame();
 });
-12
