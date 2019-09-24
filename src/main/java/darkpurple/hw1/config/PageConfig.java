@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package darkpurple.hw1.config;
 
-/**
- *
- * @author edmundliang
- */
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,13 +17,11 @@ public class PageConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/home").setViewName("home");
-        registry.addViewController("/").setViewName("home");
-        registry.addViewController("/dashboard").setViewName("dashboard");
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/gameboard").setViewName("forward:/gameboard");
-//        registry.addViewController("/gameboard").setViewName("forward:/gameboard/game_board.html");
-//        registry.addViewController("/gameboard/files").setViewName("forward:/gameboard/÷");
+        registry.addViewController("/home").setViewName("forward:home.html");
+//        registry.addViewController("/").setViewName("forward:info.html");
+//        registry.addViewController("/dashboard").setViewName("forward:dashboard.html");
+        registry.addViewController("/login").setViewName("forward:login.html");
+        registry.addViewController("/gameboard").setViewName("forward:/gameboard/gameboard.html");
     }
 
 }
