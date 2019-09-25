@@ -93,17 +93,17 @@ class SetupPhase {
         this.keyTracker = {};
         this.keyTracker["F"] = 1;
         this.keyTracker["B"] = 6;
-        this.keyTracker["0"] = 1;//Marshal
-        this.keyTracker["1"] = 1;//The Spy
-        this.keyTracker["2"] = 8;//The scout
-        this.keyTracker["3"] = 5;//The Miner
-        this.keyTracker["4"] = 4;//Sergeant
-        this.keyTracker["5"] = 4;//Lieutenant
-        this.keyTracker["6"] = 4;//Captain
-        this.keyTracker["7"] = 3;//Major
-        this.keyTracker["8"] = 2;//Colonel
-        this.keyTracker["9"] = 1;//General
-        this.keyTracker[""] = 0;//Blank Space
+        this.keyTracker["0"] = 1; //Marshal
+        this.keyTracker["1"] = 1; //The Spy
+        this.keyTracker["2"] = 8; //The scout
+        this.keyTracker["3"] = 5; //The Miner
+        this.keyTracker["4"] = 4; //Sergeant
+        this.keyTracker["5"] = 4; //Lieutenant
+        this.keyTracker["6"] = 4; //Captain
+        this.keyTracker["7"] = 3; //Major
+        this.keyTracker["8"] = 2; //Colonel
+        this.keyTracker["9"] = 1; //General
+        this.keyTracker[""] = 0; //Blank Space
         this.createInfoSection();
     }
     onKeyPress(event) {
@@ -111,13 +111,13 @@ class SetupPhase {
             game.phase.attemptStartGame();
         } else if (event.key == "End") {
             game.phase.finishPhase();
-        }else if (event.key == "Delete") {
-            if (game.currentlyHilightedCell != null) { 
-                game.phase.placePieceAt("", game.currentlyHilightedCell); 
+        } else if (event.key == "Delete") {
+            if (game.currentlyHilightedCell != null) {
+                game.phase.placePieceAt("", game.currentlyHilightedCell);
             }
         } else if (event.key.toUpperCase() == "B" || event.key.toUpperCase() == "F") {
-            if (game.currentlyHilightedCell != null) { 
-                game.phase.placePieceAt(event.key.toUpperCase(), game.currentlyHilightedCell); 
+            if (game.currentlyHilightedCell != null) {
+                game.phase.placePieceAt(event.key.toUpperCase(), game.currentlyHilightedCell);
             }
             // game.phase.lastPressedKey = event.key
         } else {
@@ -158,12 +158,12 @@ class SetupPhase {
                 if (existingKey == "") {
                     $("#" + cell).removeClass("gameboard-empty");
                     $("#" + cell).addClass("gameboard-player");
-                }else if(piece == "") {
+                } else if (piece == "") {
                     $("#" + cell).removeClass("gameboard-player");
                     $("#" + cell).addClass("gameboard-empty");
                 }
                 $("#" + cell).html(piece);
-                
+
             }
         }
         this.updateInfoSection();
@@ -191,11 +191,7 @@ class SetupPhase {
     finishPhase() {
         // Populate the opponents side of the board with pieces.
 
-        for (var row = 1; row <= 4; row++) {
-            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                $("#" + row + column).addClass("gameboard-enemy gameboard-transparent");
-            }
-        }
+
         game.phase = new PlayPhase();
     }
 }
@@ -204,96 +200,93 @@ class PlayPhase {
         this.keyTracker = {};
         this.keyTracker["F"] = 1;
         this.keyTracker["B"] = 6;
-        this.keyTracker["0"] = 1;//Marshal
-        this.keyTracker["1"] = 1;//The Spy
-        this.keyTracker["2"] = 8;//The scout
-        this.keyTracker["3"] = 5;//The Miner
-        this.keyTracker["4"] = 4;//Sergeant
-        this.keyTracker["5"] = 4;//Lieutenant
-        this.keyTracker["6"] = 4;//Captain
-        this.keyTracker["7"] = 3;//Major
-        this.keyTracker["8"] = 2;//Colonel
-        this.keyTracker["9"] = 1;//General
-        this.keyTracker[""] = 0;//Blank Space        
-        this.hiddenPieces = {};
+        this.keyTracker["0"] = 1; //Marshal
+        this.keyTracker["1"] = 1; //The Spy
+        this.keyTracker["2"] = 8; //The scout
+        this.keyTracker["3"] = 5; //The Miner
+        this.keyTracker["4"] = 4; //Sergeant
+        this.keyTracker["5"] = 4; //Lieutenant
+        this.keyTracker["6"] = 4; //Captain
+        this.keyTracker["7"] = 3; //Major
+        this.keyTracker["8"] = 2; //Colonel
+        this.keyTracker["9"] = 1; //General
+        this.keyTracker[""] = 0; //Blank Space        
+        // this.hiddenPieces = {};
 
-        var count = 40;
-        var letters = "ABCDEFGHIJ";
-
-        while(count > 0) {
-            var col = Math.floor(Math.random() * 10);
-            var row = Math.floor(Math.random() * 10);
-            var val = $("#" + letters.charAt(col) + row).html();
-            if(val == null || val == ""){
-                console.log("#" + letters.charAt(col) + row + "\n");
-                console.log($("#" + letters.charAt(col) + row).html() + "\n");
-                continue;
-            }
-            for(var x in this.keyTracker) {
-                if(this.keyTracker[x] > 0) {
-                    $("#" + letters.charAt(col) + row).html(x);
-                    // this.hiddenPieces = {};
-                    this.keyTracker[x] = this.keyTracker[x] -1;
-                    count = count -1;
-                     console.log("#" + letters.charAt(col) + row)
-                    break;
+        var keys = "FB0123456789";
+        for (var row = 1; row <= 4; row++) {
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                $("#" + row + column).addClass("gameboard-enemy gameboard-transparent");
+                $("#" + row + column).removeClass("gameboard-empty");
+                var randomKey = keys.charAt(Math.random() * 11);
+                var value = this.keyTracker[randomKey];
+                while (value <= 0) {
+                    randomKey++;
+                    value = this.keyTracker[randomKey % 11];
                 }
+                this.keyTracker[randomKey % 11] = this.keyTracker[randomKey % 11] - 1;
+                $("#" + row + column).html(randomKey);
             }
         }
     }
 
     onCellClicked(id) {
-        if(game.prevHilightedCell != null && game.currentlyHilightedCell != null) {
-            
-            var startCell= game.prevHilightedCell;
-            var endCell= game.currentlyHilightedCell;
+        if (game.prevHilightedCell != null && game.currentlyHilightedCell != null) {
 
-            var pieceOneTeam = $("#"+startCell).hasClass("gameboard-player");
-            if(!pieceOneTeam) {
-                var pieceOneTeam = $("#"+startCell).hasClass("gameboard-enemy") 
-                if(pieceOneTeam) {
+            var startCell = game.prevHilightedCell;
+            var endCell = game.currentlyHilightedCell;
+
+            var pieceOneTeam = $("#" + startCell).hasClass("gameboard-player");
+            if (!pieceOneTeam) {
+                var pieceOneTeam = $("#" + startCell).hasClass("gameboard-enemy")
+                if (pieceOneTeam) {
                     pieceOneTeam = 2;
-                }else {
+                } else {
                     pieceOneTeam = 0;
                 }
-            }else {
+            } else {
                 pieceOneTeam = 1;
             }
-            var pieceTwoTeam = $("#"+endCell).hasClass("gameboard-player");
-            if(!pieceTwoTeam) {
-                var pieceTwoTeam = $("#"+endCell).hasClass("gameboard-enemy") 
-                if(pieceTwoTeam) {
+            var pieceTwoTeam = $("#" + endCell).hasClass("gameboard-player");
+            if (!pieceTwoTeam) {
+                var pieceTwoTeam = $("#" + endCell).hasClass("gameboard-enemy")
+                if (pieceTwoTeam) {
                     pieceTwoTeam = 2;
-                }else {
+                } else {
                     pieceTwoTeam = 0;
                 }
-            }else {
+            } else {
                 pieceTwoTeam = 1;
             }
 
             var startPiece = "";
-            switch(pieceOneTeam){
-                case 1:{
-                    startPiece = $("#"+startCell).html();
-                    break;
-                }
-                case 2:{
-                    break;
-                }
+            switch (pieceOneTeam) {
+                case 1:
+                    {
+                        startPiece = $("#" + startCell).html();
+                        break;
+                    }
+                case 2:
+                    {
+                        break;
+                    }
             }
 
-            switch(pieceTwoTeam){
-                case 0:{
-                    break;
-                }
-                case 1:{
-                    break;
-                }
-                case 2:{
-                    break;
-                }
+            switch (pieceTwoTeam) {
+                case 0:
+                    {
+                        break;
+                    }
+                case 1:
+                    {
+                        break;
+                    }
+                case 2:
+                    {
+                        break;
+                    }
             }
-            var endPiece = $("#"+endCell).html();
+            var endPiece = $("#" + endCell).html();
 
 
             var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam);
@@ -305,9 +298,9 @@ class PlayPhase {
     }
     move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam) {
 
-      
-        console.log("One "+startCell + " " + startPiece+" " +startPieceTeam+ "\n");
-        console.log("Two "+endCell + " " + endPiece+" " +endPieceTeam+ "\n");
+
+        // console.log("One " + startCell + " " + startPiece + " " + startPieceTeam + "\n");
+        // console.log("Two " + endCell + " " + endPiece + " " + endPieceTeam + "\n");
         // console.log(endPiece + "\n");
         return true;
     }
@@ -322,11 +315,10 @@ class PlayPhase {
     }
 }
 class EndPhase {
-    constructor() {
-    }
+    constructor() {}
 }
 //When everything has finished loading we add the board to the DOM then start our javascript game code.
-$(document).ready(function () {
+$(document).ready(function() {
     createGameBoard();
     startGame();
 });

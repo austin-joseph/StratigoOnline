@@ -1,78 +1,96 @@
 .center {
-  margin-left: auto;
-  margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #gameboard-table {
-  width: 600px;
-  height: 600px;
-  border-collapse: collapse;
+    width: 600px;
+    height: 600px;
+    border-collapse: collapse;
 }
 
 .gameboard-vertMarker {
-  background-color: orange;
-  width: 4%;
-  height: 8%;
-  border-style: inset;
-  text-align: center;
+    background-color: orange;
+    width: 4%;
+    height: 8%;
+    border-style: inset;
+    text-align: center;
 }
 
 .gameboard-horiMarker {
-  background-color: orange;
-  width: 8%;
-  height: 4%;
-  border-style: inset;
-  text-align: center;
+    background-color: orange;
+    width: 8%;
+    height: 4%;
+    border-style: inset;
+    text-align: center;
 }
+
 .gameboard-cornerMarker {
-  background-color: darkgoldenrod;
-  border-style: inset;
+    background-color: darkgoldenrod;
+    border-style: inset;
 }
-.gameboard-transparent {
-    color: red
-  }
+
+.gameboard-transparent.gameboard-empty {
+    color: white;
+}
+
+.gameboard-transparent.gameboard-enemy {
+    color: red;
+}
+
+.gameboard-transparent.gameboard-player {
+    color: blue;
+}
+
 .gameboard-cell {
-  border-style: inset;
-  text-align: center;
-  font-size: 100%;
-  margin: 0;
+    border-style: inset;
+    text-align: center;
+    font-size: 100%;
+    margin: 0;
 }
+
 .gameboard-empty {
-  background-color: white;
+    background-color: white;
 }
 
 .gameboard-player {
-  background-color: blue;
+    background-color: blue;
 }
 
 .gameboard-enemy {
-  background-color: red;
+    background-color: red;
 }
 
 .gameboard-selected {
-  background-color: #ff4;
+    background-color: #ff4;
 }
+
+.gameboard-selected.gameboard-enemy {
+    background-color: #ff4;
+    color: #ff4;
+}
+
 tr:hover {
-  background-color: #ffa;
+    background-color: #ffa;
 }
 
 .gameboard-impassable {
-  background-color: green;
-  border-style: inset;
-  text-align: center;
-  font-size: 100%;
-  margin: 0;
+    background-color: green;
+    border-style: inset;
+    text-align: center;
+    font-size: 100%;
+    margin: 0;
 }
 
 .border {
-  border-style: inset;
+    border-style: inset;
 }
 
 .noselect {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
