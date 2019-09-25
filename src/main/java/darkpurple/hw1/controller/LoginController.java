@@ -2,10 +2,13 @@ package darkpurple.hw1.controller;
 
 import darkpurple.hw1.entity.User;
 import darkpurple.hw1.service.CustomUserDetailsService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,20 +21,20 @@ public class LoginController {
     @Autowired
     private CustomUserDetailsService userService;
 
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
-//    public ModelAndView login() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("login");
-//        return modelAndView;
-//    }
-//    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-//    public ModelAndView signup() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        User user = new User();
-//        modelAndView.addObject("user", user);
-//        modelAndView.setViewName("signup");
-//        return modelAndView;
-//    }
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView login() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public ModelAndView signup() {
+        ModelAndView modelAndView = new ModelAndView();
+        User user = new User();
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("signup");
+        return modelAndView;
+    }
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
 	ModelAndView modelAndView = new ModelAndView();
@@ -53,7 +56,7 @@ public class LoginController {
 	return modelAndView;
     }
 
-    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    @RequestMapping(value = "/player", method = RequestMethod.GET)
     public ModelAndView dashboard() {
 	ModelAndView modelAndView = new ModelAndView();
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -61,7 +64,7 @@ public class LoginController {
 	modelAndView.addObject("currentUser", user);
 	modelAndView.addObject("email", "Welcome " + user.getEmail());
 	modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-	modelAndView.setViewName("dashboard");
+	modelAndView.setViewName("player");
 	return modelAndView;
     }
 
