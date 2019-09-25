@@ -201,17 +201,114 @@ class SetupPhase {
 }
 class PlayPhase {
     constructor() {
-    }
-    onCellClicked(id) {
+        this.keyTracker = {};
+        this.keyTracker["F"] = 1;
+        this.keyTracker["B"] = 6;
+        this.keyTracker["0"] = 1;//Marshal
+        this.keyTracker["1"] = 1;//The Spy
+        this.keyTracker["2"] = 8;//The scout
+        this.keyTracker["3"] = 5;//The Miner
+        this.keyTracker["4"] = 4;//Sergeant
+        this.keyTracker["5"] = 4;//Lieutenant
+        this.keyTracker["6"] = 4;//Captain
+        this.keyTracker["7"] = 3;//Major
+        this.keyTracker["8"] = 2;//Colonel
+        this.keyTracker["9"] = 1;//General
+        this.keyTracker[""] = 0;//Blank Space        
+        this.hiddenPieces = {};
 
-        if(game.prevHilightedCell != null && game.currentlyHilightedCell != null) {
-            if (move(game.prevHilightedCell, game.currentlyHilightedCell)) {
-                game.phase.attemptEndGame();
-                aiTurn();
+        var count = 40;
+        var letters = "ABCDEFGHIJ";
+
+        while(count > 0) {
+            var col = Math.floor(Math.random() * 10);
+            var row = Math.floor(Math.random() * 10);
+            var val = $("#" + letters.charAt(col) + row).html();
+            if(val == null || val == ""){
+                console.log("#" + letters.charAt(col) + row + "\n");
+                console.log($("#" + letters.charAt(col) + row).html() + "\n");
+                continue;
+            }
+            for(var x in this.keyTracker) {
+                if(this.keyTracker[x] > 0) {
+                    $("#" + letters.charAt(col) + row).html(x);
+                    // this.hiddenPieces = {};
+                    this.keyTracker[x] = this.keyTracker[x] -1;
+                    count = count -1;
+                     console.log("#" + letters.charAt(col) + row)
+                    break;
+                }
             }
         }
     }
-    move(startCell, endCell) {
+
+    onCellClicked(id) {
+        if(game.prevHilightedCell != null && game.currentlyHilightedCell != null) {
+            
+            var startCell= game.prevHilightedCell;
+            var endCell= game.currentlyHilightedCell;
+
+            var pieceOneTeam = $("#"+startCell).hasClass("gameboard-player");
+            if(!pieceOneTeam) {
+                var pieceOneTeam = $("#"+startCell).hasClass("gameboard-enemy") 
+                if(pieceOneTeam) {
+                    pieceOneTeam = 2;
+                }else {
+                    pieceOneTeam = 0;
+                }
+            }else {
+                pieceOneTeam = 1;
+            }
+            var pieceTwoTeam = $("#"+endCell).hasClass("gameboard-player");
+            if(!pieceTwoTeam) {
+                var pieceTwoTeam = $("#"+endCell).hasClass("gameboard-enemy") 
+                if(pieceTwoTeam) {
+                    pieceTwoTeam = 2;
+                }else {
+                    pieceTwoTeam = 0;
+                }
+            }else {
+                pieceTwoTeam = 1;
+            }
+
+            var startPiece = "";
+            switch(pieceOneTeam){
+                case 1:{
+                    startPiece = $("#"+startCell).html();
+                    break;
+                }
+                case 2:{
+                    break;
+                }
+            }
+
+            switch(pieceTwoTeam){
+                case 0:{
+                    break;
+                }
+                case 1:{
+                    break;
+                }
+                case 2:{
+                    break;
+                }
+            }
+            var endPiece = $("#"+endCell).html();
+
+
+            var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam);
+            if (moveSucessful) {
+                game.phase.attemptEndGame();
+                game.phase.aiTurn();
+            }
+        }
+    }
+    move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam) {
+
+      
+        console.log("One "+startCell + " " + startPiece+" " +startPieceTeam+ "\n");
+        console.log("Two "+endCell + " " + endPiece+" " +endPieceTeam+ "\n");
+        // console.log(endPiece + "\n");
         return true;
     }
     aiTurn() {
