@@ -13,6 +13,7 @@ targetCompatibility = 1.8
 
 bootJar {
     baseName = 'darkpurple_hw1'
+    version = '1.0.0'
 }
 
 repositories {
@@ -39,3 +40,4 @@ dependencies {
     
   
 }
+
