@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -25,9 +26,15 @@ public class LoginController {
     public ModelAndView login() {
         
         //CHECK IF USER IS ALREADY LOGGED IN IF SO REDIRECT TO PLAYER PAGE
-    
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
+        
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return new ModelAndView("redirect:/player");
+        } else {
+            modelAndView.setViewName("login");
+        }
+        
         return modelAndView;
     }
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
@@ -84,12 +91,12 @@ public class LoginController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	User user = userService.findUserByEmail(auth.getName());
         
-	if (auth != null) {
-	    modelAndView.setViewName("home");
-	} else {
+	if (!(auth instanceof AnonymousAuthenticationToken)) {
 	    modelAndView.setViewName("homeloggedin");
+	} else {
+            modelAndView.setViewName("home");
+	    
         }
         return modelAndView;
     }
