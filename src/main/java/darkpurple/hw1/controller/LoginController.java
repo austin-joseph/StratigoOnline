@@ -23,6 +23,9 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
+        
+        //CHECK IF USER IS ALREADY LOGGED IN IF SO REDIRECT TO PLAYER PAGE
+    
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         return modelAndView;
@@ -67,15 +70,27 @@ public class LoginController {
 	modelAndView.setViewName("player");
 	return modelAndView;
     }
+    
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){   
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/login?logout=true";
+    }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public String home() {
+    public ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView();
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	User user = userService.findUserByEmail(auth.getName());
-	if (user != null) {
-	    return "forward:home.html";
+        
+	if (auth != null) {
+	    modelAndView.setViewName("home");
 	} else {
-	    return "forward:info.html";
-	}
+	    modelAndView.setViewName("homeloggedin");
+        }
+        return modelAndView;
     }
 }
