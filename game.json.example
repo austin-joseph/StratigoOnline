@@ -7,17 +7,22 @@
 	/*either player 1 player 2 or null of no one won. Can also be an error code if the game didnt complete normally */	
 	},
 	"board":{
-		"starting_state": {"1A":"B",
-							"1B":"F",
-							"1C":"9",
-							...
-			/*until we cover every piece on the board*/
-			/*This is a json object that has a map of every square to the piece in that square. We can tell what team the piece belongs to based on its position.*/
+		"state_list":{
+			[["1A","B","owningPlayer"],
+			["1B":"F","owningPlayer"],
+			["1C":"9","owningPlayer"],
+			...,],
+			[["1A","B","owningPlayer"],
+			["1B":"F","owningPlayer"],
+			["1C":"9","owningPlayer"],
+			...,]
 		},
+		/*This is a json object that is an array of every board state that happened during the game. Each board state is  a map of every cell's id to  the piece that occupies that square.*/
 		"moves":[
-			["1A", "5A", "9"],
-			["9A","5A", "B"],
-			/*A list of all of moves for both players. It contains the starting position and the ending position and what piece was in that position after the action occured.*/
-		]
+			["1A", "5A", "9", "player1"],
+			["9A","5A", "B", "player2"],
+			/*A list of all of moves for both players. It contains the starting position,  the ending position,  what piece was in that position after the action occured, and whos owns the piece(null of the square is empty).*/
+		],			
+		}
 	}
 }
