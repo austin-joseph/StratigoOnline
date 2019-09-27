@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -23,8 +24,17 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
+        
+        //CHECK IF USER IS ALREADY LOGGED IN IF SO REDIRECT TO PLAYER PAGE
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
+        
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return new ModelAndView("redirect:/player");
+        } else {
+            modelAndView.setViewName("login");
+        }
+        
         return modelAndView;
     }
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
@@ -67,15 +77,27 @@ public class LoginController {
 	modelAndView.setViewName("player");
 	return modelAndView;
     }
+    
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){   
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/login?logout=true";
+    }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public String home() {
+    public ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView();
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	User user = userService.findUserByEmail(auth.getName());
-	if (user != null) {
-	    return "forward:home.html";
+        
+	if (!(auth instanceof AnonymousAuthenticationToken)) {
+	    modelAndView.setViewName("homeloggedin");
 	} else {
-	    return "forward:info.html";
-	}
+            modelAndView.setViewName("home");
+	    
+        }
+        return modelAndView;
     }
 }
