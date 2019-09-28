@@ -14,18 +14,18 @@ import java.util.*;
  * @author anilramsoomye
  */
 @Document (collection = "gameInfo")
-public class gameInfo {
+public class GameInfo {
     @Id
     private String gameID;
     
     private String player1; //AI so 0
     private String player2; //email of player
     
-    private String winner; //email
+    private String jsonBody; // winner, boardStates, moves
     
     
-    private LinkedList<pieceState> stateList;
-    private LinkedList<move> moves;
+   /* private LinkedList<pieceState> stateList;
+    private LinkedList<move> moves;*
         
     
     public class move{
@@ -40,7 +40,7 @@ public class gameInfo {
         private String endingSpot;
         private String pieceOwner;
                 
-    }
+    }*/
 
     public String getGameID() {
         return gameID;
@@ -54,17 +54,7 @@ public class gameInfo {
         return player2;
     }
 
-    public String getWinner() {
-        return winner;
-    }
-
-    public LinkedList<pieceState> getStateList() {
-        return stateList;
-    }
-
-    public LinkedList<move> getMoves() {
-        return moves;
-    }
+   
 
     public void setGameID(String gameID) {
         this.gameID = gameID;
@@ -76,18 +66,6 @@ public class gameInfo {
 
     public void setPlayer2(String player2) {
         this.player2 = player2;
-    }
-
-    public void setWinner(String winner) {
-        this.winner = winner;
-    }
-
-    public void setStateList(LinkedList<pieceState> stateList) {
-        this.stateList = stateList;
-    }
-
-    public void setMoves(LinkedList<move> moves) {
-        this.moves = moves;
     }
     
     
