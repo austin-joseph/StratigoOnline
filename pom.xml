@@ -4,7 +4,7 @@
 
     <groupId>com.darkpurple.hw1</groupId>
     <artifactId>darkpurple</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>0.1.0</version>
 
     <properties>
