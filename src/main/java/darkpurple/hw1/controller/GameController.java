@@ -11,6 +11,7 @@ import darkpurple.hw1.service.GameService;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,11 +42,8 @@ public class GameController {
         return game;
     }
     
-    
-    
-    /*
-    @RequestMapping(value = "/player/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/pastgames", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Game> getPlayerGames() {
-        return gameService.getPlayerGames(playerService.getLoggedUser());
-    }*/
+        return gameService.getPlayerGames(userService.getLoggedUser());
+    }
 }
