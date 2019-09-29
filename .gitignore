@@ -15,3 +15,5 @@ gradle
 **/.vscode
 .settings
 bin
+/target
+
