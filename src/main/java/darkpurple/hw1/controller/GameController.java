@@ -33,7 +33,7 @@ public class GameController {
     @Autowired
     protected CustomUserDetailsService userService;
     
-    @RequestMapping(value = "/gameEnds", method = RequestMethod.POST)
+    @RequestMapping(value = "/gameboard", method = RequestMethod.POST)
     public GameInfo createGame(String player1, String player2, String jsonText) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
