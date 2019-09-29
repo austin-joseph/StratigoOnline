@@ -5,9 +5,7 @@
  */
 package darkpurple.hw1.entity;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.*;
 
 /**
  *
@@ -67,6 +65,11 @@ public class GameInfo {
     public void setPlayer2(String player2) {
         this.player2 = player2;
     }
+
+    public void setJsonBody(String jsonBody) {
+        this.jsonBody = jsonBody;
+    }
+    
     
     
     

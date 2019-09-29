@@ -14,6 +14,6 @@ import java.util.List;
  *
  * @author anilramsoomye
  */
-public interface gameInfoRepository extends MongoRepository<GameInfo, String> {
+public interface GameInfoRepository extends MongoRepository<GameInfo, String> {
     
 }
