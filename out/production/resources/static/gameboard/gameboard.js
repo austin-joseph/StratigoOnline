@@ -140,7 +140,7 @@ class SetupPhase {
     placePieceAt(piece, cell) {
         //Dont allow if they try to place something into the impassible cells or on the enemy side.
 
-        var row = cell.substring(0, 1);
+        var row = cell.split(cell.length - 1)[0];
         if (row < 7) {
             return;
         }
@@ -322,6 +322,7 @@ class PlayPhase {
                 return true;
             } else {
 
+                //Compare the strength of the pieces and thehighest level wins
             }
         }
         //Make sure the end position is in 
