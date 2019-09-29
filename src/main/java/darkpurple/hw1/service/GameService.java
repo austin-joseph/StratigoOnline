@@ -12,11 +12,13 @@ import darkpurple.hw1.repository.UserRepository;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author edmundliang
  */
+@Service
 public class GameService {
    
     @Autowired

@@ -41,7 +41,7 @@ public class Game {
                 
     }*/
 
-    public String getGameid() {
+    public String getGameId() {
         return number;
     }
 
@@ -54,7 +54,7 @@ public class Game {
         return date;
     }
 
-    public void setGameID(String gameid) {
+    public void setGameId(String gameid) {
         this.number = gameid;
     }
 

@@ -12,5 +12,4 @@ public interface GameRepository extends MongoRepository<Game, String> {
     
     Game findByNumber(String gameid);
     
-    
 }
