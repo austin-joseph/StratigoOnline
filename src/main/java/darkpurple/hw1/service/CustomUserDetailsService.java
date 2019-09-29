@@ -13,6 +13,8 @@ import darkpurple.hw1.entity.Role;
 import darkpurple.hw1.entity.User;
 import darkpurple.hw1.repository.RoleRepository;
 import darkpurple.hw1.repository.UserRepository;
+import darkpurple.hw1.repository.gameInfoRepository;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,6 +38,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private gameInfoRepository gameInfoRepository;
+    
 
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
