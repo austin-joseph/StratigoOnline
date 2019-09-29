@@ -4,7 +4,7 @@
 
     <groupId>com.darkpurple.hw1</groupId>
     <artifactId>darkpurple</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <version>0.1.0</version>
 
     <properties>
@@ -52,6 +52,14 @@
                     <mainClass>com.darkpurple.hw1.Application</mainClass>
                 </configuration>
             </plugin>
+ <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>1.3.2</version>
+        <configuration>
+          <version>1</version>
+        </configuration>
+      </plugin>
         </plugins>
     </build>
 
