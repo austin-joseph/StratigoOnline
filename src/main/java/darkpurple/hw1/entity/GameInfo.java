@@ -68,6 +68,10 @@ public class GameInfo {
         this.player2 = player2;
     }
     
+    public void setJsonBody(String json) {
+        this.jsonBody = json;
+    }
+    
     
     
 }

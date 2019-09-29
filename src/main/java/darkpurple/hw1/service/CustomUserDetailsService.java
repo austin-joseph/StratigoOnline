@@ -13,7 +13,6 @@ import darkpurple.hw1.entity.Role;
 import darkpurple.hw1.entity.User;
 import darkpurple.hw1.repository.RoleRepository;
 import darkpurple.hw1.repository.UserRepository;
-import darkpurple.hw1.repository.gameInfoRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +27,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import darkpurple.hw1.repository.GameInfoRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -38,8 +38,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private gameInfoRepository gameInfoRepository;
     
 
     public User findUserByEmail(String email) {

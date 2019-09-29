@@ -27,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService mongoUserDetails() {
         return new CustomUserDetailsService();
     }
+    
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
