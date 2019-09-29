@@ -29,6 +29,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import darkpurple.hw1.repository.GameInfoRepository;
 
 
 
@@ -41,7 +42,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+<<<<<<< HEAD
  
+=======
+    @Autowired
+    private GameInfoRepository gameInfoRepository;
+>>>>>>> 45465fb5c00ed1ad96f8db0d817e5b4ed94241dd
     
 
     public User findUserByEmail(String email) {

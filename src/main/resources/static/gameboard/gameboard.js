@@ -63,6 +63,10 @@ function onCellClicked(e) {
 class Game {
     constructor() {
         this.history = {};
+
+        this.gameState = {};
+        this.moves = {};
+        
     }
     begin() {
         this.phase = new SetupPhase(this);

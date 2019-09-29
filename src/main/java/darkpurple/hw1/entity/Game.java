@@ -5,10 +5,12 @@
  */
 package darkpurple.hw1.entity;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+<<<<<<< HEAD:src/main/java/darkpurple/hw1/entity/Game.java
 import java.util.*;
 import org.springframework.data.mongodb.core.index.IndexDirection;
+=======
+>>>>>>> 45465fb5c00ed1ad96f8db0d817e5b4ed94241dd:src/main/java/darkpurple/hw1/entity/GameInfo.java
 
 /**
  *
@@ -67,6 +69,11 @@ public class Game {
     public void setDateCreated(Date date) {
         this.date = date;
     }
+
+    public void setJsonBody(String jsonBody) {
+        this.jsonBody = jsonBody;
+    }
+    
     
     
     
