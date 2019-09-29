@@ -63,6 +63,12 @@ function onCellClicked(e) {
 class Game {
     constructor() {
         this.history = {};
+<<<<<<< Updated upstream
+=======
+        this.gameState = {};
+        this.moves = {};
+        
+>>>>>>> Stashed changes
     }
     begin() {
         this.phase = new SetupPhase(this);
