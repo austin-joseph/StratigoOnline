@@ -26,12 +26,7 @@
 
                     <div class="align-center w-100 m-b-15">
                         <div th:if="${param.error}">
-                            Invalid email and password.
-                        </div>
-                        <div th:if="${param.logout}" class="align-center">
-                            <div class="alert alert-danger align-center">
-                                <strong>You have been logged out.</strong>
-                            </div>
+                            Email already exists.
                         </div>
                     </div>
                     <span class="txt1 p-b-11">Username</span>

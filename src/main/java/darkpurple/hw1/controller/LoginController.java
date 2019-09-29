@@ -90,13 +90,13 @@ public class LoginController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        
-	if (!(auth instanceof AnonymousAuthenticationToken)) {
-        return new ModelAndView("redirect:/player");
-	} else {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return new ModelAndView("redirect:/player");
+        }
+        else {
             modelAndView.setViewName("home");
-	    
         }
         return modelAndView;
     }

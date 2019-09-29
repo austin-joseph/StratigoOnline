@@ -26,7 +26,9 @@
 
                     <div class="align-center w-100 m-b-15">
                         <div th:if="${param.error}">
-                            Invalid email and password.
+                            <div class="alert alert-danger align-center">
+                                <strong>Invalid email and password.</strong>
+                            </div>
                         </div>
                         <div th:if="${param.logout}" class="align-center">
                             <div class="alert alert-danger align-center">
