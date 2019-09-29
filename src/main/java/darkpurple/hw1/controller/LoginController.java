@@ -93,7 +93,7 @@ public class LoginController {
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         
 	if (!(auth instanceof AnonymousAuthenticationToken)) {
-	    modelAndView.setViewName("homeloggedin");
+        return new ModelAndView("redirect:/player");
 	} else {
             modelAndView.setViewName("home");
 	    

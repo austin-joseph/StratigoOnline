@@ -62,8 +62,7 @@ function onCellClicked(e) {
 }
 class Game {
     constructor() {
-        var prevHilightedCell = null;
-        var currentlyHilightedCell = null;
+        this.history = {};
     }
     begin() {
         this.phase = new SetupPhase(this);
@@ -93,7 +92,6 @@ class SetupPhase {
         this.keyTracker = {};
         this.keyTracker["F"] = 1;
         this.keyTracker["B"] = 6;
-        this.keyTracker["0"] = 1; //Marshal
         this.keyTracker["1"] = 1; //The Spy
         this.keyTracker["2"] = 8; //The scout
         this.keyTracker["3"] = 5; //The Miner
@@ -103,6 +101,7 @@ class SetupPhase {
         this.keyTracker["7"] = 3; //Major
         this.keyTracker["8"] = 2; //Colonel
         this.keyTracker["9"] = 1; //General
+        this.keyTracker["10"] = 1; //Marshal
         this.keyTracker[""] = 0; //Blank Space
         this.createInfoSection();
     }
@@ -121,8 +120,8 @@ class SetupPhase {
             }
             // game.phase.lastPressedKey = event.key
         } else {
-            if (event.key >= "0" && event.key <= "9") {
-                if (game.currentlyHilightedCell != null) game.phase.placePieceAt(event.key, game.currentlyHilightedCell);
+            if ((event.key >= "0" && event.key <= "9")) {
+                if (game.currentlyHilightedCell != null) game.phase.placePieceAt((event.key == 0) ? "10" : ("" + event.key), game.currentlyHilightedCell);
                 // game.phase.lastPressedKey = (value == 0) ? "10" : ("" + value);
             }
         }
@@ -190,8 +189,6 @@ class SetupPhase {
     }
     finishPhase() {
         // Populate the opponents side of the board with pieces.
-
-
         game.phase = new PlayPhase();
     }
 }
@@ -200,7 +197,6 @@ class PlayPhase {
         this.keyTracker = {};
         this.keyTracker["F"] = 1;
         this.keyTracker["B"] = 6;
-        this.keyTracker["0"] = 1; //Marshal
         this.keyTracker["1"] = 1; //The Spy
         this.keyTracker["2"] = 8; //The scout
         this.keyTracker["3"] = 5; //The Miner
@@ -210,6 +206,7 @@ class PlayPhase {
         this.keyTracker["7"] = 3; //Major
         this.keyTracker["8"] = 2; //Colonel
         this.keyTracker["9"] = 1; //General
+        this.keyTracker["10"] = 1; //Marshal
         this.keyTracker[""] = 0; //Blank Space        
         // this.hiddenPieces = {};
 
@@ -230,7 +227,7 @@ class PlayPhase {
         }
     }
 
-    onCellClicked(id) {
+    onCellClicked() {
         if (game.prevHilightedCell != null && game.currentlyHilightedCell != null) {
 
             var startCell = game.prevHilightedCell;
@@ -259,50 +256,106 @@ class PlayPhase {
                 pieceTwoTeam = 1;
             }
 
-            var startPiece = "";
-            switch (pieceOneTeam) {
-                case 1:
-                    {
-                        startPiece = $("#" + startCell).html();
-                        break;
-                    }
-                case 2:
-                    {
-                        break;
-                    }
-            }
-
-            switch (pieceTwoTeam) {
-                case 0:
-                    {
-                        break;
-                    }
-                case 1:
-                    {
-                        break;
-                    }
-                case 2:
-                    {
-                        break;
-                    }
-            }
+            var startPiece = $("#" + startCell).html();
             var endPiece = $("#" + endCell).html();
 
-
-            var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam);
+            var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam, 1);
+            console.log("Move: " + moveSucessful);
             if (moveSucessful) {
                 game.phase.attemptEndGame();
                 game.phase.aiTurn();
+                game.phase.attemptEndGame();
             }
         }
     }
-    move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam) {
+    move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn) {
+        if (startPiece == "" || startPiece == "B" || startPiece == "F") {
+            return false;
+        }
+        if (startPieceTeam != currentTurn) {
+            return false;
+        }
+        if (endPieceTeam == currentTurn) {
+            return false;
+        }
+        var startColumn = startCell.slice(startCell.length - 1)[0];
+        var startRow = startCell.slice(startCell.length - 1)[1];
+        var endColumn = endCell.slice(endCell.length - 1)[0];
+        var endRow = endCell.slice(endCell.length - 1)[1];
 
+        if (startPiece == "2") { //If you are a scout you have special rules for movement.
 
+            if (startColumn != endColumn && startRow != endRow) {
+                return false;
+            }
+            if (endPiece == "") {
+                //Just move there  
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }
+            } else if (endPiece == "B") {
+                //Kill the scout that attacked and reveal the bomb
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
+                    $("#" + startCell).html("");
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    return true;
+                }
+                return true;
+            } else if (endPiece == "F") {
+                //Move the scount and win the game.              
+                return true;
+            } else {
+
+            }
+        }
+        //Make sure the end position is in 
+        // if (startColumn == endColumn) {
+
+        // } else {
+        //     //Limit movement to only one square 
+
+        //     //Pieces can only move or attack
+        //     if (Math.abs(parseInt(startRow) - parseInt(endRow)) > 1) {
+        //         return false;
+        //     } else {
+        //         if (endPiece == "B") {
+        //             if (startPiece == "3") {
+        //                 //Kill the bomb and move             
+        //                 return true;
+        //             } else {
+        //                 //Kill the piece that moved             
+        //                 return true;
+        //             }
+        //         } else if (endPiece == "F") {
+        //             //Win the game;                                     
+        //             return true;
+        //         } else {
+        //             //The pieces trade accoording to the normal trading table.
+        //         }
+        //     }
+
+        // }
+        // }
         // console.log("One " + startCell + " " + startPiece + " " + startPieceTeam + "\n");
         // console.log("Two " + endCell + " " + endPiece + " " + endPieceTeam + "\n");
         // console.log(endPiece + "\n");
-        return true;
+        return false;
     }
     aiTurn() {
 

@@ -1,0 +1,56 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: hsl(0, 0%, 18.82%);
+    color: #ffffff;
+    width: 100%;
+    height: 100%;
+}
+
+.btn-rounded {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #fefefe;
+    border-radius: 10em;
+}
+
+.btn-rounded-size {
+    font-size: 25px;
+    padding: .84rem 2.14rem;
+    margin-left: 45px;
+    margin-right: 45px;
+}
+
+.btn-rounded:hover {
+    color: #222222;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-rounded:focus, .btn-rounded.focus {
+    box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
+}
+
+.btn-rounded.disabled, .btn-rounded:disabled {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.centerreddiv {
+    position: absolute;
+    width: 85%;
+    top: 43%;
+    left: 50%;
+    text-align: center;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.buttons-center {
+    position: relative;
+    text-align: center;
+    transform: translateY(-50%);
+}
