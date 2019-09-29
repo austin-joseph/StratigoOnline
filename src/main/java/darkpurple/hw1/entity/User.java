@@ -9,6 +9,7 @@ package darkpurple.hw1.entity;
  *
  * @author edmundliang
  */
+import java.util.List;
 import org.springframework.data.annotation.Id;
 import java.util.Set;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -39,7 +40,7 @@ public class User {
     public String getPassword() {
         return password;
     }
-
+    
     public boolean isEnabled() {
         return enabled;
     }

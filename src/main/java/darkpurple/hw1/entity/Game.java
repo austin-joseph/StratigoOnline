@@ -8,18 +8,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.*;
+import org.springframework.data.mongodb.core.index.IndexDirection;
 
 /**
  *
  * @author anilramsoomye
  */
-@Document (collection = "gameInfo")
-public class GameInfo {
-    @Id
-    private String gameID;
+
+public class Game {
     
-    private String player1; //AI so 0
-    private String player2; //email of player
+    @Id
+    private String number;
+    private User player;
+    private Date date;
     
     private String jsonBody; // winner, boardStates, moves
     
@@ -42,30 +43,29 @@ public class GameInfo {
                 
     }*/
 
-    public String getGameID() {
-        return gameID;
+    public String getGameid() {
+        return number;
     }
 
-    public String getPlayer1() {
-        return player1;
+    public User getPlayer() {
+        return player;
+    
+    }
+    
+    public Date getDateCreated() {
+        return date;
     }
 
-    public String getPlayer2() {
-        return player2;
+    public void setGameID(String gameid) {
+        this.number = gameid;
     }
 
-   
-
-    public void setGameID(String gameID) {
-        this.gameID = gameID;
+    public void setPlayer(User player) {
+        this.player = player;
     }
 
-    public void setPlayer1(String player1) {
-        this.player1 = player1;
-    }
-
-    public void setPlayer2(String player2) {
-        this.player2 = player2;
+    public void setDateCreated(Date date) {
+        this.date = date;
     }
     
     
