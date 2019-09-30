@@ -219,9 +219,13 @@ class SetupPhase {
         var tr2 = $($.parseHTML("<tr id=\"info-row2\"></tr>"));
         for (var i in this.keyTracker) {
 
-            tr1.append($($.parseHTML("<th>" + i + "</th>")));
+            tr1.append($($.parseHTML("<th>" + i + '\xa0\xa0\xa0' + "</th>")));
             tr2.append($($.parseHTML("<td>" + this.keyTracker[i] + "</td>")));
+            if (i == "B") {
+                tr2.append('\xa0');
+            }
         }
+        tr1.append("Total");
         tbody.append(tr1);
         tbody.append(tr2);
     }
