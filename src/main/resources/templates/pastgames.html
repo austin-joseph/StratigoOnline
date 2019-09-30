@@ -1,18 +1,110 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <div>View past games</div>
-    </body>
+<html lang="en">
+
+<head>
+    <title>Dark Purple HW 1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/gameboard/gameboard.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+
+    <link href="icons/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
+    <script src="/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src='bootstrap/js/bootstrap.min.js'></script>
+    <script src="/gameboard/gameboard.js"></script>
+
+</head>
+<body>
+<div class="noselect">
+    <div class="top-toolbar d-flex justify-content-between">
+        <i class="fas fa-arrow-left icon-style" data-toggle="modal" data-target="#homeBtnModal" title="Home"></i>
+        <!-- Home button Modal -->
+        <div class="modal fade modal-style" id="homeBtnModal" tabindex="-1" role="dialog" aria-labelledby="homeBtnModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="homeBtnModalLabel">Go to Dashboard?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="/player">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-style">View Past Games</div>
+
+        <i class="fas fa-sign-out-alt icon-style btn-logout" data-toggle="modal" data-target="#logoutBtnModal" title="Sign Out"></i>
+        <!-- Logout button Modal -->
+        <div class="modal fade modal-style" id="logoutBtnModal" tabindex="-1" role="dialog" aria-labelledby="logoutBtnModalModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logoutBtnModalLabel">Want to Logout?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="/logout">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gameboard-body m-t-25 m-b-25">
+        <div class="d-flex justify-content-around">
+            <div class="past-games-list">
+                <table class="table table-striped table-dark table-responsive">
+                    <thead class="thead-move-history">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Result</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>10</td>
+                        <td>222</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="gameboard" class="center"></div>
+            <div class="move-history">
+                <table class="table table-striped table-dark table-responsive">
+                    <thead class="thead-move-history">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Attack</th>
+                        <th scope="col">Defend</th>
+                        <th scope="col">Captured</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>10</td>
+                        <td>222</td>
+                        <td>3333</td>
+                        <td>@4444</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <i id="backward" class="far fa-arrow-alt-circle-left icon-style icon-bottom" data-toggle="tooltip" title="Backward"></i>
+        <i id="forward" class="far fa-arrow-alt-circle-right icon-style icon-bottom" data-toggle="tooltip" title="Forward"></i>
+    </div>
+</div>
+</body>
 </html>
