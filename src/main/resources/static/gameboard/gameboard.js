@@ -457,11 +457,8 @@ class PlayPhase {
                 }
             }
             
-            // reset the availablePieces for the next loop
+            // reset the availablePieces for next loop iteration
             availablePieces = "";
-            
-            
-            
             
         }
         
