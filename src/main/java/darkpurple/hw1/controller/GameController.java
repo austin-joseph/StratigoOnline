@@ -5,6 +5,7 @@
  */
 package darkpurple.hw1.controller;
 
+import darkpurple.hw1.entity.Game;
 import darkpurple.hw1.entity.User;
 import darkpurple.hw1.service.GameService;
 import darkpurple.hw1.repository.GameRepository;
