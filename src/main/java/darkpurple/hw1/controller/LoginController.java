@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import darkpurple.hw1.repository.GameInfoRepository;
+import darkpurple.hw1.repository.GameRepository;
 
 @Controller
 public class LoginController {
@@ -94,13 +94,13 @@ public class LoginController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        
-	if (!(auth instanceof AnonymousAuthenticationToken)) {
-	    modelAndView.setViewName("homeloggedin");
-	} else {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return new ModelAndView("redirect:/player");
+        }
+        else {
             modelAndView.setViewName("home");
-	    
         }
         return modelAndView;
     }

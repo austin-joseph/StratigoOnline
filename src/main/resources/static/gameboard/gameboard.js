@@ -60,9 +60,13 @@ function onCellClicked(e) {
         game.onCellClicked(e.currentTarget.id);
     }
 }
+
+
 class Game {
     constructor() {
         this.history = {};
+        this.history.boardState = []; 
+        this.history.moves =[];
         
     }
     begin() {
@@ -86,7 +90,56 @@ class Game {
             }
         }
     }
+    getOwningPlayer(cell) {
+        if ($("#" + endCell).hasClass("gameboard-enemy")) {
+            return "2";     
+        }
+        else if ($("#" + endCell).hasClass("gameboard-player")) {
+            return "1";
+        }
+        else {
+            return "0";
+        }
+    }
+    sendGameData() {
+        //var a = JSON.stringify(game.history);
+        //$.post("", a);
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(game.history), // name of the post variable ($_POST['id'])
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success: function(data) {
+            console.log('successfully posted data! response body: ' + data);
+            }
+        });
+        
+    }
 }
+function saveBoardState() {
+    game.tempObject = {};
+    for (var row = 1; row <= 10; row++) {
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                if ($("#" + row + column).hasClass("gameboard-enemy")) {
+                    game.tempObject["" + row + column] = [$("#" + row + column).html(), "2"];
+                }
+                else  if ($("#" + row + column).hasClass("gameboard-player")) {
+                    game.tempObject["" + row + column] = [$("#" + row + column).html(), "1"]
+                }
+                else {
+                    game.tempObject["" + row + column] = [$("#" + row + column).html(), "0"]
+                }
+             
+           
+           }
+           
+       }
+       game.history.boardState.push(game.tempObject)
+    
+    
+}
+    
+
 class SetupPhase {
     constructor() {
         // this.lastPressedKey = null;
@@ -193,6 +246,7 @@ class SetupPhase {
         game.phase = new PlayPhase();
     }
 }
+
 class PlayPhase {
     constructor() {
         this.keyTracker = {};
@@ -226,6 +280,8 @@ class PlayPhase {
                 $("#" + row + column).html(randomKey);
             }
         }
+        saveBoardState();
+        game.sendGameData();
     }
 
     onCellClicked() {
@@ -263,8 +319,15 @@ class PlayPhase {
             var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam, 1);
             console.log("Move: " + moveSucessful);
             if (moveSucessful) {
+                //code to save move of user
+               // game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell)];
+               // game.history.append(tempObject2);
+                
+                //saveBoardState();
                 game.phase.attemptEndGame();
                 game.phase.aiTurn();
+                
+               // saveBoardState();
                 game.phase.attemptEndGame();
             }
         }
@@ -279,6 +342,7 @@ class PlayPhase {
         if (endPieceTeam == currentTurn) {
             return false;
         }
+        
         var startColumn = startCell.slice(startCell.length - 1)[0];
         var startRow = startCell.slice(startCell.length - 1)[1];
         var endColumn = endCell.slice(endCell.length - 1)[0];

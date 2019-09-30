@@ -1,1 +1,1 @@
-java -jar build/libs/darkpurple_hw1.jar
+mvn -DskipTests spring-boot:run
