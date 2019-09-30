@@ -5,50 +5,76 @@
  */
 package darkpurple.hw1.controller;
 
-/**
- *
- * @author anilramsoomye
- * 
- */
-import darkpurple.hw1.entity.GameInfo;
+import darkpurple.hw1.entity.Game;
 import darkpurple.hw1.entity.User;
-
+import darkpurple.hw1.repository.GameRepository;
+import darkpurple.hw1.service.CustomUserDetailsService;
+import darkpurple.hw1.service.GameService;
+import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import darkpurple.hw1.service.CustomUserDetailsService;
-import darkpurple.hw1.repository.GameInfoRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+/**
+ *
+ * @author edmundliang
+ */
 
-
-@RestController
+@Controller
 public class GameController {
     
     @Autowired
-    private GameInfoRepository gameInfoRepository;
+    private GameService gameService;
     
     @Autowired
-    protected CustomUserDetailsService userService;
+    private CustomUserDetailsService userService;
+    
+    @Autowired
+    HttpSession session;
+    
+    @RequestMapping(value = "/dashboard", method = RequestMethod.POST)
+    public Game createNewGame() {
+
+        Game game = gameService.createNewGame(userService.getLoggedUser());
+        session.setAttribute("gameId", game.getGameId());
+
+        return game;
+    }
+    
+    @RequestMapping(value = "/pastgames", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Game> getPlayerGames() {
+        return gameService.getPlayerGames(userService.getLoggedUser());
+    }
     
     @RequestMapping(value = "/gameboard", method = RequestMethod.POST)
-    public GameInfo createGame(String player1, String player2, String jsonText) {
+    public Game createGame(String jsonText) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-        GameInfo info = new GameInfo();
-        info.setPlayer1(user.getEmail());
-        info.setPlayer2(player2);
+        Game info = new Game();
+        info.setPlayer(user);
         info.setJsonBody(jsonText);
                 
-        gameInfoRepository.save(info);
+        gameService.addGame(info);
         
         return info;
         
         
     }
-
     
-    
+   @RequestMapping(value = "/gameboard", method = RequestMethod.GET)
+    public ModelAndView login() {
+        
+        ModelAndView modelAndView = new ModelAndView();
+        
+        modelAndView.setViewName("gameboard");
+       
+        
+        return modelAndView;
+    }
 }

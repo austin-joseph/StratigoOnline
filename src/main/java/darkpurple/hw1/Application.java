@@ -2,7 +2,6 @@ package darkpurple.hw1;
 
 import darkpurple.hw1.entity.Role;
 import darkpurple.hw1.repository.RoleRepository;
-import java.util.Arrays;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
