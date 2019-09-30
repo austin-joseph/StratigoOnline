@@ -94,3 +94,37 @@ tr:hover {
     -ms-user-select: none;
     user-select: none;
 }
+
+i {
+    font-size: 30px;
+    margin: 12px 35px 12px 35px;
+    color: #fefefe;
+}
+
+strong {
+    font-size: 20px;
+}
+
+.top-toolbar {
+    position: relative;
+    margin-bottom: 10px;
+    background-color: #1d2124;
+}
+
+.icon-style {
+    cursor: pointer;
+}
+
+.btn-logout {
+    float: right;
+}
+
+.instruction {
+    max-width: 25%;
+    margin: 0px 20px 0px 20px;
+}
+
+.move-history {
+    max-width: 25%;
+    margin: 0px 20px 0px 20px;
+}
