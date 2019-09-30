@@ -228,9 +228,13 @@ class SetupPhase {
         var tr2 = $($.parseHTML("<tr id=\"info-row2\"></tr>"));
         for (var i in this.keyTracker) {
 
-            tr1.append($($.parseHTML("<th>" + i + "</th>")));
+            tr1.append($($.parseHTML("<th>" + i + '\xa0\xa0\xa0' + "</th>")));
             tr2.append($($.parseHTML("<td>" + this.keyTracker[i] + "</td>")));
+            if (i == "B") {
+                tr2.append('\xa0');
+            }
         }
+        tr1.append("Total");
         tbody.append(tr1);
         tbody.append(tr2);
     }
@@ -424,6 +428,53 @@ class PlayPhase {
         return false;
     }
     aiTurn() {
+     
+        var moveSuccess = 0;
+        
+        // check available pieces in each row
+        var availablePieces = "";
+        for (var row = 9; row <= 1; row++) {
+            
+            // if AI move is successful break out of loop to stop searching
+            if (moveSuccess==1) {
+                break;
+            }
+            
+            // check each row for available pieces
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                if ($("#" + row + column).hasClass("gameboard-enemy") && $("#" + row + column).html() != "") {
+                    
+                    availablePieces = availablePieces.concat($("#" + row + column).html());
+                }
+            }
+            
+            // continuously select a random piece from available pieces to see if a move is possible
+            var move = 0;
+            while (move == 0) {
+                
+                 //move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn)
+                 
+                var piece = availablePieces.charAt(Math.floor(Math.random() * availabePieces.length));
+                // if move successful set the variables, so that loop breaks out on next iteration
+                if (move()) {
+                    move = 1;
+                    moveSuccuess == 1;
+                    
+                } else {
+                    // else remove piece from available pieces and try another pieces
+                    availablePieces = availablePieces.remove(piece, "");
+                }
+            }
+            
+            // reset the availablePieces for next loop iteration
+            availablePieces = "";
+            
+        }
+        
+        
+        
+            
+        
 
     }
     attemptEndGame() {
@@ -440,4 +491,12 @@ class EndPhase {
 $(document).ready(function() {
     createGameBoard();
     startGame();
+
+    $("#backward").click(function () {
+        console.log("BACKWARD");
+    });
+
+    $("#forward").click(function () {
+        console.log("FORWARD");
+    });
 });
