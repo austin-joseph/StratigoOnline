@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.index.IndexDirection;
  *
  * @author anilramsoomye
  */
-
+@Document (collection = "games")
 public class Game {
     
     @Id

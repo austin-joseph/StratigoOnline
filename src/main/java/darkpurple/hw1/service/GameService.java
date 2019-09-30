@@ -44,4 +44,9 @@ public class GameService {
     public Game getGame(String id) {
         return gameRepository.findByNumber(id);
     }
+    
+    public Game addGame(Game game) {
+        gameRepository.save(game);
+        return game;
+    }
 }
