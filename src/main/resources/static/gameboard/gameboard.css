@@ -121,10 +121,55 @@ strong {
 
 .instruction {
     max-width: 25%;
+    font-size: 14px;
     margin: 0px 20px 0px 20px;
 }
 
 .move-history {
-    max-width: 25%;
+    min-width: 320px;
     margin: 0px 20px 0px 20px;
+    overflow:hidden;
+}
+
+.past-games-list {
+    min-width: 250px;
+    margin: 0px 20px 0px 20px;
+    overflow:hidden;
+}
+
+.move-history table, .past-games-list table {
+    position: relative;
+    max-height: 600px;
+    overflow-y: scroll;
+    border-collapse: collapse;
+}
+
+.move-history table thead, .past-games-list table thead {
+    font-size: 20px;
+    color: #999999;
+}
+
+.move-history th, .past-games-list th {
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    border: 0;
+    background-color: #333333;
+    font-size: 20px;
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.header-style {
+    margin: auto;
+    text-align: center;
+    font-size: 30px;
+}
+
+.icon-bottom {
+    font-size: 40px;
 }
