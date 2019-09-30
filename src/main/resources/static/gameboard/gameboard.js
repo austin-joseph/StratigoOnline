@@ -419,6 +419,56 @@ class PlayPhase {
         return false;
     }
     aiTurn() {
+     
+        var moveSuccess = 0;
+        
+        // check available pieces in each row
+        var availablePieces = "";
+        for (var row = 9; row <= 1; row++) {
+            
+            // if AI move is successful break out of loop to stop searching
+            if (moveSuccess==1) {
+                break;
+            }
+            
+            // check each row for available pieces
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                if ($("#" + row + column).hasClass("gameboard-enemy") && $("#" + row + column).html() != "") {
+                    
+                    availablePieces = availablePieces.concat($("#" + row + column).html());
+                }
+            }
+            
+            // continuously select a random piece from available pieces to see if a move is possible
+            var move = 0;
+            while (move == 0) {
+                
+                 //move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn)
+                 
+                var piece = availablePieces.charAt(Math.floor(Math.random() * availabePieces.length));
+                // if move successful set the variables, so that loop breaks out on next iteration
+                if (move()) {
+                    move = 1;
+                    moveSuccuess == 1;
+                    
+                } else {
+                    // else remove piece from available pieces and try another pieces
+                    availablePieces = availablePieces.remove(piece, "");
+                }
+            }
+            
+            // reset the availablePieces for the next loop
+            availablePieces = "";
+            
+            
+            
+            
+        }
+        
+        
+        
+            
+        
 
     }
     attemptEndGame() {
