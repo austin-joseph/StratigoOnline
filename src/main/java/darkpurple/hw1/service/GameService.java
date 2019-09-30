@@ -42,7 +42,7 @@ public class GameService {
     }
     
     public Game getGame(String id) {
-        return gameRepository.findByNumber(id);
+        return gameRepository.findBygameID(id);
     }
     
     public Game addGame(String user, String json) {
