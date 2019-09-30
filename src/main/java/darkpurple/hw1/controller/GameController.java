@@ -52,7 +52,7 @@ public class GameController {
         return gameService.getPlayerGames(userService.getLoggedUser());
     }
     
-    @RequestMapping(value = "/gameboard", method = RequestMethod.POST)
+    @RequestMapping(value = "/recordGame", method = RequestMethod.POST)
     public Game createGame(String jsonText) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
@@ -67,14 +67,4 @@ public class GameController {
         
     }
     
-   @RequestMapping(value = "/gameboard", method = RequestMethod.GET)
-    public ModelAndView login() {
-        
-        ModelAndView modelAndView = new ModelAndView();
-        
-        modelAndView.setViewName("gameboard");
-       
-        
-        return modelAndView;
-    }
 }

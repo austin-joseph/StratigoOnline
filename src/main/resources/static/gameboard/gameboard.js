@@ -92,8 +92,7 @@ class Game {
     }
     getOwningPlayer(cell) {
         if ($("#" + endCell).hasClass("gameboard-enemy")) {
-            return "2";
-           
+            return "2";     
         }
         else if ($("#" + endCell).hasClass("gameboard-player")) {
             return "1";
@@ -103,9 +102,8 @@ class Game {
         }
     }
     sendGameData() {
-        var a = JSON.stringify(game.history.boardState);
-        var b = JSON.stringify(game.history.moves);
-        $.post("", a + b);
+        var a = JSON.stringify(game.history);
+        $.post("/recordGame", a);
         
     }
 }
@@ -116,15 +114,18 @@ function saveBoardState() {
                 if ($("#" + row + column).hasClass("gameboard-enemy")) {
                     game.tempObject["" + row + column] = [$("#" + row + column).html(), "2"];
                 }
-                else {
+                else  if ($("#" + row + column).hasClass("gameboard-player")) {
                     game.tempObject["" + row + column] = [$("#" + row + column).html(), "1"]
+                }
+                else {
+                    game.tempObject["" + row + column] = [$("#" + row + column).html(), "0"]
                 }
              
            
            }
            
        }
-       game.history.boardState.append(tempObject)
+       game.history.boardState.push(game.tempObject)
     
     
 }
@@ -310,14 +311,14 @@ class PlayPhase {
             console.log("Move: " + moveSucessful);
             if (moveSucessful) {
                 //code to save move of user
-                game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell)];
-                game.history.append(tempObject2);
+               // game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell)];
+               // game.history.append(tempObject2);
                 
-                saveBoardState();
+                //saveBoardState();
                 game.phase.attemptEndGame();
                 game.phase.aiTurn();
                 
-                saveBoardState();
+               // saveBoardState();
                 game.phase.attemptEndGame();
             }
         }
@@ -333,53 +334,53 @@ class PlayPhase {
             return false;
         }
         
-//        var startColumn = startCell.slice(startCell.length - 1)[0];
-//        var startRow = startCell.slice(startCell.length - 1)[1];
-//        var endColumn = endCell.slice(endCell.length - 1)[0];
-//        var endRow = endCell.slice(endCell.length - 1)[1];
-//
-//        if (startPiece == "2") { //If you are a scout you have special rules for movement.
-//
-//            if (startColumn != endColumn && startRow != endRow) {
-//                return false;
-//            }
-//            if (endPiece == "") {
-//                //Just move there  
-//                if (currentTurn == 1) {
-//                    $("#" + startCell).removeClass("gameboard-player");
-//                    $("#" + endCell).addClass("gameboard-player");
-//                    $("#" + startCell).html("");
-//                    $("#" + endCell).html(startPiece);
-//                    return true;
-//                } else if (currentTurn == 2) {
-//                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
-//                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
-//                    $("#" + startCell).html("");
-//                    $("#" + endCell).html(startPiece);
-//                    return true;
-//                }
-//            } else if (endPiece == "B") {
-//                //Kill the scout that attacked and reveal the bomb
-//                if (currentTurn == 1) {
-//                    $("#" + startCell).removeClass("gameboard-player");
-//                    $("#" + endCell).removeClass("gameboard-transparent");
-//                    $("#" + startCell).html("");
-//                    return true;
-//                } else if (currentTurn == 2) {
-//                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
-//                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
-//                    $("#" + startCell).html("");
-//                    return true;
-//                }
-//                return true;
-//            } else if (endPiece == "F") {
-//                //Move the scount and win the game.              
-//                return true;
-//            } else {
-//
-//                //Compare the strength of the pieces and thehighest level wins
-//            }
-//        }
+        var startColumn = startCell.slice(startCell.length - 1)[0];
+        var startRow = startCell.slice(startCell.length - 1)[1];
+        var endColumn = endCell.slice(endCell.length - 1)[0];
+        var endRow = endCell.slice(endCell.length - 1)[1];
+
+        if (startPiece == "2") { //If you are a scout you have special rules for movement.
+
+            if (startColumn != endColumn && startRow != endRow) {
+                return false;
+            }
+            if (endPiece == "") {
+                //Just move there  
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }
+            } else if (endPiece == "B") {
+                //Kill the scout that attacked and reveal the bomb
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
+                    $("#" + startCell).html("");
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    return true;
+                }
+                return true;
+            } else if (endPiece == "F") {
+                //Move the scount and win the game.              
+                return true;
+            } else {
+
+                //Compare the strength of the pieces and thehighest level wins
+            }
+        }
         //Make sure the end position is in 
         // if (startColumn == endColumn) {
 
@@ -411,7 +412,7 @@ class PlayPhase {
         // console.log("One " + startCell + " " + startPiece + " " + startPieceTeam + "\n");
         // console.log("Two " + endCell + " " + endPiece + " " + endPieceTeam + "\n");
         // console.log(endPiece + "\n");
-        return true;
+        return false;
     }
     aiTurn() {
 
