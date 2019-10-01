@@ -492,7 +492,7 @@ class PlayPhase {
                 // if move successful set the variables, so that loop breaks out on next iteration
                 if (move()) {
                     move = 1;
-                    moveSuccuess == 1;
+                    moveSuccess == 1;
 
                 } else {
                     // else remove piece from available pieces and try another pieces
@@ -513,9 +513,7 @@ class PlayPhase {
             If all your movable pieces have been removed and you cannot move or attack on a turn, you lose.
         
         **/
-       
-       
-       
+
        var playerFlag = 0;
        var aiFlag = 0;
        var playerMovablePieces = 0; // 0 is no more movable pieces
@@ -550,9 +548,9 @@ class PlayPhase {
                 for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
                     var piece = $("#" + row + column).html();
                     if (piece != "F" && piece != "B" && piece != "" ) {
-                        if(piece.hasClass("gameboard-player")) {
+                        if($("#" + row + column).hasClass("gameboard-player")) {
                             playerMovablePieces = 1;
-                        } else if (piece.hasClass("gameboard-enemy")) {
+                        } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
                             aiMovablePieces = 1;
                         }
                     }
