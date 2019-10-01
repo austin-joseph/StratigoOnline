@@ -594,4 +594,6 @@ $(document).ready(function () {
     $("#forward").click(function () {
         console.log("FORWARD");
     });
+
+    $('#gameEndsModal').modal('hide');
 });
