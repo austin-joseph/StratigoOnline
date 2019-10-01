@@ -65,6 +65,7 @@ class Game {
         this.history.boardState = [];
         this.history.moves = [];
         this.history.winner = "";
+        game.finished = false;
 
     }
     begin() {
@@ -83,7 +84,7 @@ class Game {
             if (game.currentlyHilightedCell != null) {
                 $("#" + game.currentlyHilightedCell).addClass("gameboard-selected");
             }
-            if (game.phase.onCellClicked != null) {
+            if (game.phase.onCellClicked != null && !game.finished) {
                 game.phase.onCellClicked(id);
             }
         }
@@ -556,61 +557,37 @@ class PlayPhase {
             }
         }
 
-
-        if (playerFlag == 0 && aiFlag == 1) {
-            // AI won
-            finishPhase(2);
-
-        } else if (playerFlag == 1 && aiFlag == 0) {
+        if (playerFlag == 0 && aiFlag == 0) {
             // player won
-            finishPhase(1);
-
-        } else if (playerFlag == 1 && aiFlag == 1) {
-            // if both flags are still present check for other win conditions
-
-            // check if all ur moveable pieces have been removed and you cannot attack move or attack on a turn
-            for (var row = 1; row <= 10; row++) {
-                for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                    var piece = $("#" + row + column).html();
-                    if (piece != "F" && piece != "B" && piece != "") {
-                        if ($("#" + row + column).hasClass("gameboard-player")) {
-                            playerMovablePieces = 1;
-                        } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
-                            aiMovablePieces = 1;
-                        }
-                    }
-                }
-            }
-
-            if (playerMovablePieces == 0 && aiMovablePieces == 1) {
-                // AI won
-                finishPhase(2);
-            } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
-                // player won
-                finishPhase(1);
-                return true;
-            } else if (playerFlag == 0 && aiFlag == 1) {
-                // player won
-                finishPhase(2);
-                return true;
-            } else if (playerFlag == 1 && aiFlag == 1) {
-                // if both flags are still present check for other win conditions
-
-                // check if all ur moveable pieces have been removed and you cannot attack move or attack on a turn
-                for (var row = 1; row <= 10; row++) {
-                    for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                        var piece = $("#" + row + column).html();
-                        if (piece != "F" && piece != "B" && piece != "") {
-                            if ($("#" + row + column).hasClass("gameboard-player")) {
-                                playerMovablePieces = 1;
-                            } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
-                                aiMovablePieces = 1;
-                            }
-                        }
-                    }
-                }
-            }
+            game.phase.finishPhase(0);
+            return true;
+        } else if (playerMovablePieces == 0 && aiMovablePieces == 1) {
+            // AI won
+            game.phase.finishPhase(2);
+            return true;
+        } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
+            // player won
+            game.phase.finishPhase(1);
+            return true;
         }
+        // else {
+        //     // if both flags are still present check for other win conditions
+
+        //     // check if all ur moveable pieces have been removed and you cannot attack move or attack on a turn
+        //     for (var row = 1; row <= 10; row++) {
+        //         for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+        //             var piece = $("#" + row + column).html();
+        //             if (piece != "F" && piece != "B" && piece != "") {
+        //                 if ($("#" + row + column).hasClass("gameboard-player")) {
+        //                     playerMovablePieces = 1;
+        //                 } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
+        //                     aiMovablePieces = 1;
+        //                 }
+        //             }
+        //         }
+        //     }
+
+        // }
         return false;
     }
 
@@ -626,6 +603,9 @@ class PlayPhase {
             // player won
             $('#gameEndsModal').modal('show');
             $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
+        } else {
+            $('#gameEndsModal').modal('show');
+            $('#gameEndsModalBodyLabel').append('Its a draw!');
         }
     }
 }
