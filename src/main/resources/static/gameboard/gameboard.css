@@ -7,6 +7,8 @@
     width: 600px;
     height: 600px;
     border-collapse: collapse;
+    color: #333333;
+    font-weight: bold;
 }
 
 .gameboard-vertMarker {
@@ -51,7 +53,7 @@
 }
 
 .gameboard-player {
-    background-color: blue;
+    background-color: #5897fb;
 }
 
 .gameboard-enemy {
@@ -59,11 +61,11 @@
 }
 
 .gameboard-selected {
-    background-color: #ff4;
+    background-color: #005cbf;
 }
 
 .gameboard-selected.gameboard-enemy {
-    background-color: #ff4;
+    background-color: #b3b7bb;
     color: #ff4;
 }
 
