@@ -513,7 +513,7 @@ class PlayPhase {
         
         **/
 
-<<<<<<< HEAD
+
        var playerFlag = 0;
        var aiFlag = 0;
        var playerMovablePieces = 0; // 0 is no more movable pieces
@@ -521,7 +521,7 @@ class PlayPhase {
        
        // Check if enemy flag is destroyed
        for (var row = 1; row <= 10; row++) {
-=======
+
 
 
         var playerFlag = 0;
@@ -531,7 +531,6 @@ class PlayPhase {
 
         // Check if enemy flag is destroyed
         for (var row = 1; row <= 10; row++) {
->>>>>>> 41ff7332828d27c8364eadd58fdd7e5a19198c9e
             for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
                 if ($("#" + row + column).html() == "F") {
                     if ($("#" + row + column).hasClass("gameboard-player")) {
