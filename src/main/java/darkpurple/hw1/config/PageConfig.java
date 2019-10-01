@@ -14,6 +14,7 @@ public class PageConfig implements WebMvcConfigurer {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
+    
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

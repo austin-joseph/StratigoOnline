@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dark Purple HW 1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/gameboard/gameboard.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+
+    <link href="icons/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
+    <script src="/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src='bootstrap/js/bootstrap.min.js'></script>
+    <script src="/gameboard/gameboard.js"></script>
+
+</head>
+
+<body>
+    <div class="noselect">
+        <div class="top-toolbar d-flex justify-content-between">
+            <i class="fas fa-arrow-left icon-style" data-toggle="modal" data-target="#homeBtnModal" title="Home"></i>
+            <!-- Home button Modal -->
+            <div class="modal fade modal-style" id="homeBtnModal" tabindex="-1" role="dialog" aria-labelledby="homeBtnModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="homeBtnModalLabel">Go to Dashboard?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary" href="/player">OK</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-style">Play Stratego</div>
+
+            <i class="fas fa-sign-out-alt icon-style btn-logout" data-toggle="modal" data-target="#logoutBtnModal" title="Sign Out"></i>
+            <!-- Logout button Modal -->
+            <div class="modal fade modal-style" id="logoutBtnModal" tabindex="-1" role="dialog" aria-labelledby="logoutBtnModalModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="logoutBtnModalLabel">Want to Logout?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary" href="/logout">OK</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gameboard-body m-t-25 m-b-25">
+            <div class="d-flex justify-content-around">
+                <div class="instruction">
+                    <strong>Instruction</strong><br><br>
+                    To place Stratego pieces, click a cell between 7th row and 10th row.
+                    Then, press the number key between 1 ~ 10, "F", or "B", and you will see the cell occupied by a piece.<br>
+                    To delete a piece on a cell, click the piece and press "Delete" key.<br>
+                    To start the game, press "Enter" key when you set up all the pieces.<br>
+                    To end the game, press "End" key or click the backward button placed on top left.<br>
+                    Pieces move 1 square per turn, horizontally or vertically. Only the scout can move over multiple empty squares per turn. Pieces cannot jump over another piece.
+                    <br><br>
+                    If a piece is moved onto a square occupied by an opposing piece, their identities are revealed.
+                    The weaker piece is removed from the board, and the stronger piece is moved into the place formerly occupied by the weaker piece.
+                    If the engaging pieces are of equal rank, they are both removed.
+                    Pieces may not move onto a square already occupied by another piece without attacking.
+                    Exception to the rule of the higher rank winning is the spy.
+                    When the spy attacks the marshal, the spy defeats the higher ranked marshal.
+                    However, when the marshal attacks the spy, the spy loses.
+                    Bombs lose when they are defused by a miner.
+                </div>
+                <div id="gameboard" class="center"></div>
+                <div class="move-history">
+                    <table class="table table-striped table-dark table-responsive">
+                        <thead class="thead-move-history">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Attack</th>
+                                <th scope="col">Defend</th>
+                                <th scope="col">Captured</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>2</td>
+                                <td>3333</td>
+                                <td>@4444</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="info-panel" class="center border">
+            <table>
+                <thead>
+                <strong>&nbsp&nbsp&nbsp Number of Stratego Pieces:</strong>
+                <td></td>
+                </thead>
+                <tbody id="info-table"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
