@@ -315,16 +315,15 @@ class PlayPhase {
             console.log("Move: " + moveSucessful);
             if (moveSucessful) {
                 //code to save move of user
-                console.log("hmmmm");
                 game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell)];
-                game.history.moves.push(tempObject2);
+                game.history.moves.push(game.tempObject2);
                 
                 saveBoardState();
-                game.sendGameData();
+                //game.sendGameData();
                 game.phase.attemptEndGame();
                 game.phase.aiTurn();
 
-                // saveBoardState();
+                saveBoardState();
                 game.phase.attemptEndGame();
             }
         }
