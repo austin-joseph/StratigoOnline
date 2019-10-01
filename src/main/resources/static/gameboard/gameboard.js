@@ -471,8 +471,6 @@ class PlayPhase {
         return false;
     }
     aiTurn() {
-        console.log('1111');
-
         var moveSuccess = 0;
 
         // check available pieces in each row
@@ -546,12 +544,11 @@ class PlayPhase {
                 }
             }
 
-            if (playerFlag == 0 && aiFlag == 0) {
+            if (playerFlag == 0 && aiFlag == 1) {
                 // AI won
                 game.phase.finishPhase(2);
                 $('#gameEndsModal').modal('show');
                 $('#gameEndsModalBodyLabel').append("You Lost!");
-                console.log("dddd")
 
             } else if (playerFlag == 1 && aiFlag == 0) {
                 // player won
@@ -615,4 +612,42 @@ $(document).ready(function () {
     });
 
     $('#gameEndsModal').modal('hide');
+
+    $("#autoSetup").click(function () {
+        this.keyTracker = {};
+        this.keyTracker["F"] = 1;
+        this.keyTracker["B"] = 6;
+        this.keyTracker["1"] = 1; //The Spy
+        this.keyTracker["2"] = 8; //The scout
+        this.keyTracker["3"] = 5; //The Miner
+        this.keyTracker["4"] = 4; //Sergeant
+        this.keyTracker["5"] = 4; //Lieutenant
+        this.keyTracker["6"] = 4; //Captain
+        this.keyTracker["7"] = 3; //Major
+        this.keyTracker["8"] = 2; //Colonel
+        this.keyTracker["9"] = 1; //General
+        this.keyTracker["10"] = 1; //Marshal
+        this.keyTracker[""] = 0; //Blank Space
+        // this.hiddenPieces = {};
+
+        var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+        for (var row = 7; row <= 10; row++) {
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                $("#" + row + column).addClass("gameboard-player gameboard-transparent");
+                $("#" + row + column).removeClass("gameboard-empty");
+                var randomKey = keys[Math.floor(Math.random() * keys.length)];
+                var value = this.keyTracker[randomKey];
+                while (value <= 0) {
+                    randomKey = keys[Math.floor(Math.random() * keys.length)];
+                    value = this.keyTracker[randomKey];
+                }
+                this.keyTracker[randomKey] = this.keyTracker[randomKey] - 1;
+                $("#" + row + column).html(randomKey);
+            }
+        }
+    });
+
+    $("#autoplay").click(function () {
+
+    });
 });
