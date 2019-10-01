@@ -5,47 +5,54 @@
  */
 package darkpurple.hw1.entity;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.*;
+
 import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
+
 /**
  *
  * @author anilramsoomye
  */
-@Document (collection = "games")
+
+@Document (collection = "games1")
 public class Game {
     
     @Id
-    private String number;
-    private User player;
+    private String gameID;
+    
+    private String player;
+    
     private Date date;
     
     private String jsonBody; // winner, boardStates, moves
-    
-    
-   /* private LinkedList<pieceState> stateList;
-    private LinkedList<move> moves;*
-        
-    
-    public class move{
-        private String startingSpot;
-        private String endingSpot;
-        private String piece;
-        private String pieceOwner;
-    }
-    
-    public class pieceState {
-        private String startingSpot;
-        private String endingSpot;
-        private String pieceOwner;
-                
-    }*/
 
-    public String getGameId() {
-        return number;
+    public String getGameID() {
+        return gameID;
     }
 
-    public User getPlayer() {
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
+    }
+
+    
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
+  
+
+   
+
+
+    public String getPlayer() {
         return player;
     
     }
@@ -54,22 +61,28 @@ public class Game {
         return date;
     }
 
-    public void setGameId(String gameid) {
-        this.number = gameid;
-    }
+   
 
-    public void setPlayer(User player) {
+
+   
+
+    
+    public void setPlayer(String player) {
         this.player = player;
     }
 
-    public void setDateCreated(Date date) {
-        this.date = date;
-    }
+   
 
-    public void setJsonBody(String jsonBody) {
-        this.jsonBody = jsonBody;
+
+    
+ 
+    public void setJsonBody(String jsonBody2) {
+        this.jsonBody = jsonBody2;
     }
     
+    public String getJsonBody() {
+        return jsonBody;
+    }
     
     
     
