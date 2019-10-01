@@ -501,7 +501,6 @@ class PlayPhase {
         /** Conditions for winning the game. 
             The enemy flag is destroyed. 
             If all your movable pieces have been removed and you cannot move or attack on a turn, you lose.
-        
         **/
        
        
