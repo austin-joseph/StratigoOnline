@@ -501,6 +501,7 @@ class PlayPhase {
         /** Conditions for winning the game. 
             The enemy flag is destroyed. 
             If all your movable pieces have been removed and you cannot move or attack on a turn, you lose.
+        
         **/
        
        
@@ -525,9 +526,11 @@ class PlayPhase {
         
         if(playerFlag == 0 && aiFlag == 0) {
             // AI won
+            finishPhase(2);
             
         } else if (playerFlag == 1 && aiFlag == 0) {
             // player won
+            finihshPhase(1);
             
         } else if (playerFlag == 1 && aiFlag == 1) {
             // if both flags are still present check for other win conditions
@@ -548,8 +551,10 @@ class PlayPhase {
             
             if (playerMovablePieces == 0 && aiMovablePieces == 1) {
                 // AI won
+                finishPhase(2);
             } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
                 // player won
+                finishPhase(1);
             }
             
             
@@ -557,7 +562,7 @@ class PlayPhase {
        
 
     }
-    finishPhase() {
+    finishPhase(team) {
         game.phase = new EndPhase(this);
     }
 }
