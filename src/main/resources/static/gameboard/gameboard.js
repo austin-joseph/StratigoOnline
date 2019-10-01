@@ -87,7 +87,7 @@ class Game {
             }
         }
     }
-    getOwningPlayer(cell) {
+    getOwningPlayer(endCell) {
         if ($("#" + endCell).hasClass("gameboard-enemy")) {
             return "2";
         } else if ($("#" + endCell).hasClass("gameboard-player")) {
@@ -97,9 +97,18 @@ class Game {
         }
     }
     sendGameData() {
-        var a = JSON.stringify(game.history);
-        $.post("/recordGame", a);
-
+        //var a = JSON.stringify(game.history);
+        //$.post("", a);
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(game.history), // name of the post variable ($_POST['id'])
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success: function(data) {
+            console.log('successfully posted data! response body: ' + data);
+            }
+        });
+        
     }
 }
 
@@ -262,7 +271,7 @@ class PlayPhase {
             }
         }
         saveBoardState();
-        game.sendGameData();
+       // game.sendGameData();
     }
 
     onCellClicked() {
@@ -301,14 +310,15 @@ class PlayPhase {
             console.log("Move: " + moveSucessful);
             if (moveSucessful) {
                 //code to save move of user
-                // game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell)];
-                // game.history.append(tempObject2);
-
-                //saveBoardState();
+                game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell)];
+                game.history.moves.push(game.tempObject2);
+                
+                saveBoardState();
+                //game.sendGameData();
                 game.phase.attemptEndGame();
                 game.phase.aiTurn();
 
-                // saveBoardState();
+                saveBoardState();
                 game.phase.attemptEndGame();
             }
         }
@@ -567,7 +577,9 @@ class PlayPhase {
     }
 }
 class EndPhase {
-    constructor() {}
+    constructor() {
+        game.sendGameData();
+    }
 }
 //When everything has finished loading we add the board to the DOM then start our javascript game code.
 $(document).ready(function() {

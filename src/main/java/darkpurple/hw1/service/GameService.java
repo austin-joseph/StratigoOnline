@@ -27,10 +27,10 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
     
-    public Game createNewGame(User player) {
+    public Game createNewGame(String player) {
         Game game = new Game();
         game.setPlayer(player);
-        game.setDateCreated(new Date());
+        game.setDate(new Date());
         gameRepository.save(game);
 
         return game;
@@ -38,14 +38,18 @@ public class GameService {
     
     
     public List<Game> getPlayerGames(User player) {
-        return gameRepository.findAll().stream().filter(game -> game.getPlayer() == player).collect(Collectors.toList());
+        return gameRepository.findAll().stream().filter(game -> game.getPlayer() == player.getEmail()).collect(Collectors.toList());
     }
     
     public Game getGame(String id) {
-        return gameRepository.findByNumber(id);
+        return gameRepository.findBygameID(id);
     }
     
-    public Game addGame(Game game) {
+    public Game addGame(String user, String json) {
+        Game game = new Game();
+        game.setPlayer(user);
+        game.setJsonBody(json);
+        game.setDate(new Date());
         gameRepository.save(game);
         return game;
     }
