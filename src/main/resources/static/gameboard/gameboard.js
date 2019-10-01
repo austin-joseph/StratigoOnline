@@ -64,6 +64,7 @@ class Game {
         this.history = {};
         this.history.boardState = [];
         this.history.moves = [];
+        this.history.winner = "";
 
     }
     begin() {
@@ -492,7 +493,7 @@ class PlayPhase {
                 // if move successful set the variables, so that loop breaks out on next iteration
                 if (move()) {
                     move = 1;
-                    moveSuccuess == 1;
+                    moveSuccess == 1;
 
                 } else {
                     // else remove piece from available pieces and try another pieces
@@ -540,7 +541,7 @@ class PlayPhase {
             
         } else if (playerFlag == 1 && aiFlag == 0) {
             // player won
-            finihshPhase(1);
+            finishPhase(1);
             
         } else if (playerFlag == 1 && aiFlag == 1) {
             // if both flags are still present check for other win conditions
@@ -550,9 +551,9 @@ class PlayPhase {
                 for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
                     var piece = $("#" + row + column).html();
                     if (piece != "F" && piece != "B" && piece != "" ) {
-                        if(piece.hasClass("gameboard-player")) {
+                        if($("#" + row + column).hasClass("gameboard-player")) {
                             playerMovablePieces = 1;
-                        } else if (piece.hasClass("gameboard-enemy")) {
+                        } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
                             aiMovablePieces = 1;
                         }
                     }
@@ -573,6 +574,7 @@ class PlayPhase {
 
     }
     finishPhase(team) {
+        game.history.winner = team;
         game.phase = new EndPhase(this);
     }
 }
