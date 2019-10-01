@@ -562,9 +562,13 @@ class PlayPhase {
             if (playerMovablePieces == 0 && aiMovablePieces == 1) {
                 // AI won
                 finishPhase(2);
+                $('#gameEndsModal').modal('show');
+                $('#gameEndsModalBodyLabel').append("You Lost!");
             } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
                 // player won
                 finishPhase(1);
+                $('#gameEndsModal').modal('show');
+                $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
             }
             
             
@@ -593,4 +597,6 @@ $(document).ready(function() {
     $("#forward").click(function() {
         console.log("FORWARD");
     });
+
+    $('#gameEndsModal').modal('hide');
 });
