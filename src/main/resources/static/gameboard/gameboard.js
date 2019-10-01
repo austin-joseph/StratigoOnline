@@ -65,7 +65,7 @@ class Game {
         this.history.boardState = [];
         this.history.moves = [];
         this.history.winner = "";
-        game.finished = false;
+        this.finished = false;
 
     }
     begin() {
@@ -271,7 +271,6 @@ class PlayPhase {
             }
         }
         saveBoardState();
-        // game.sendGameData();
     }
 
     onCellClicked() {
@@ -323,6 +322,7 @@ class PlayPhase {
             }
         }
     }
+
     saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam) {
         var deadPiece;
         var deadPieceTeam;
@@ -336,6 +336,7 @@ class PlayPhase {
         game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell), deadPiece];
         game.history.moves.push(game.tempObject2);
     }
+
     move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn) {
         if (startPiece == "" || startPiece == "B" || startPiece == "F") {
             return false;
@@ -474,63 +475,12 @@ class PlayPhase {
         }
         return false;
     }
+
+    findPieces() {
+
+    }
+
     aiTurn() {
-        for (var row = 10; row <= 1; row--) {
-            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                //Find the first piece that can be moved. 
-                var piece = $("#" + row + column).html();
-
-                if ($("#" + row + column).hasClass("gameboard-enemy") && piece != "") {
-
-                    //We found valid pliece
-                    //Determine if theres a good palce to move it. 
-                    //First search if 
-
-                }
-            }
-        }
-        var moveSuccess = 0;
-
-        // check available pieces in each row
-        var availablePieces = "";
-        for (var row = 10; row <= 1; row--) {
-
-            // if AI move is successful break out of loop to stop searching
-            if (moveSuccess == 1) {
-                break;
-            }
-
-            // check each row for available pieces
-            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                if ($("#" + row + column).hasClass("gameboard-enemy") && $("#" + row + column).html() != "") {
-
-                    availablePieces = availablePieces.concat($("#" + row + column).html());
-                }
-            }
-
-            // continuously select a random piece from available pieces to see if a move is possible
-            var move = 0;
-            while (move == 0) {
-
-                //move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn)
-
-                var piece = availablePieces.charAt(Math.floor(Math.random() * availabePieces.length));
-                // if move successful set the variables, so that loop breaks out on next iteration
-                if (move()) {
-                    move = 1;
-                    moveSuccess == 1;
-
-                } else {
-                    // else remove piece from available pieces and try another pieces
-                    availablePieces = availablePieces.remove(piece, "");
-                }
-            }
-
-            // reset the availablePieces for next loop iteration
-            availablePieces = "";
-
-        }
-
 
     }
     attemptEndGame() {
