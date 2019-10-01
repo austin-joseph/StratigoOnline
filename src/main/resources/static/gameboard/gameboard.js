@@ -524,7 +524,9 @@ class PlayPhase {
     }
 }
 class EndPhase {
-    constructor() {}
+    constructor() {
+        game.sendGameData();
+    }
 }
 //When everything has finished loading we add the board to the DOM then start our javascript game code.
 $(document).ready(function() {
