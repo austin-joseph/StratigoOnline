@@ -41,6 +41,10 @@ public class GameService {
         return gameRepository.findAll().stream().filter(game -> game.getPlayer() == player.getEmail()).collect(Collectors.toList());
     }
     
+    public List<Game> getAllGames() {
+        return gameRepository.findAll();
+    }
+    
     public Game getGame(String id) {
         return gameRepository.findBygameID(id);
     }

@@ -23,6 +23,7 @@ public class PageConfig implements WebMvcConfigurer {
 //        registry.addViewController("/dashboard").setViewName("forward:dashboard.html");
         registry.addViewController("/login").setViewName("forward:login.html");
         registry.addViewController("/gameboard").setViewName("forward:/gameboard/gameboard.html");
+        registry.addViewController("/pastgames").setViewName("forward:/pastgames/pastgames.html");
     }
 
 }
