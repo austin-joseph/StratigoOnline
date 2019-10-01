@@ -376,14 +376,330 @@ class PlayPhase {
                     $("#" + startCell).html("");
                     return true;
                 }
-                return true;
             } else if (endPiece == "F") {
                 //Move the scount and win the game.              
-                return true;
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }
             } else {
 
-                //Compare the strength of the pieces and thehighest level wins
+                //Compare the strength of the pieces and the highest level wins
+                if (currentTurn == 1) {
+                    if (Number(startPiece) < Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + startCell).html("");
+                        return true;
+                    } else if (Number(startPiece) > Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + endCell).addClass("gameboard-player");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html(startPiece);
+                    } else {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html("");
+                        
+                    }
+                } else if (currentTurn == 2) {
+                    if (Number(startPiece) < Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        return true;
+                    } else if (Number(startPiece) > Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html(startPiece);
+                    } else {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + endCell).removeClass("gameboard-enemy");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html("");
+                        
+                    }
+                }
             }
+        } else if (startPiece == '3') {
+            
+            // MINER
+            
+            if (startColumn != endColumn && startRow != endRow) {
+                return false;
+            }
+            
+            // if miner strikes bomb or moving into empty space
+            if (endPiece == "B" || endPiece == ""){
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }
+            } else if (endPiece =="F"){
+                // Move the miner and win the game.
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }
+                
+            } else {
+                // Compare the strength of the pieces and the highlest level wins
+                if (currentTurn == 1) {
+                    if (Number(startPiece) < Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + startCell).html("");
+                        return true;
+                    } else if (Number(startPiece) > Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + endCell).addClass("gameboard-player");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html(startPiece);
+                        return true;
+                    } else {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html("");
+                        return true;
+                        
+                    }
+                } else if (currentTurn == 2) {
+                    if (Number(startPiece) < Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        return true;
+                    } else if (Number(startPiece) > Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html(startPiece);
+                        return true;
+                    } else {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + endCell).removeClass("gameboard-enemy");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html("");
+                        return true;
+                        
+                    }
+                }
+            }
+        } else if (startPiece == "1") {
+            
+            // SPY
+            
+            if (startColumn != endColumn && startRow != endRow) {
+                return false;
+            } 
+            
+            // if spy moves into empty space
+            if (endPiece == ""){
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }
+            } else if (endPiece =="F"){
+                
+                // Move the spy and win the game.
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }
+                
+                
+            } else if (endPiece == "B") {
+                
+                // if bomb is attacked
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
+                    $("#" + startCell).html("");
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    return true;
+                }
+            } else if (endPiece == "10") {
+                
+                // if spy attacks marshall, marshall is destroyed and removed
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                }
+                
+            } else {
+                
+                // else spy gets destroyed if it tries to attack any other piece
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + startCell).html("");
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                }
+            }
+     
+        } else {
+            
+            // normally ranked pieces (non scout, miner, spy)
+            
+            if (startColumn != endColumn && startRow != endRow) {
+                return false;
+            } 
+            
+            // move into blank space
+            if (endPiece == ""){
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }
+            } else if (endPiece =="F"){
+                
+                // Move the piece and win the game.
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-player");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    $("#" + endCell).html(startPiece);
+                    return true;
+                }  
+            } else if (endPiece == "B") {
+                
+                // if bomb is attacked
+                if (currentTurn == 1) {
+                    $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
+                    $("#" + startCell).html("");
+                    return true;
+                } else if (currentTurn == 2) {
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).html("");
+                    return true;
+                }
+            } else {
+                // Compare the strength of the pieces and the highlest level wins
+                if (currentTurn == 1) {
+                    if (Number(startPiece) < Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + startCell).html("");
+                        return true;
+                    } else if (Number(startPiece) > Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + endCell).addClass("gameboard-player");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html(startPiece);
+                        return true;
+                    } else {
+                        $("#" + startCell).removeClass("gameboard-player");
+                        $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html("");
+                        return true;
+                        
+                    }
+                } else if (currentTurn == 2) {
+                    if (Number(startPiece) < Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        return true;
+                    } else if (Number(startPiece) > Number(endPiece)) {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html(startPiece);
+                        return true;
+                    } else {
+                        $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                        $("#" + endCell).removeClass("gameboard-enemy");
+                        $("#" + startCell).html("");
+                        $("#" + endCell).html("");
+                        return true;
+                        
+                    }
+                }
+            }
+            
+            
         }
         //Make sure the end position is in 
         // if (startColumn == endColumn) {
@@ -424,7 +740,7 @@ class PlayPhase {
         
         // check available pieces in each row
         var availablePieces = "";
-        for (var row = 9; row <= 1; row++) {
+        for (var row = 10; row <= 1; row--) {
             
             // if AI move is successful break out of loop to stop searching
             if (moveSuccess==1) {
