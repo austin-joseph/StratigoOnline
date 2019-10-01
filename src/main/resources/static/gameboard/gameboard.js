@@ -453,7 +453,6 @@ class PlayPhase {
     }
     aiTurn() {
 
-<<<<<<< HEAD
         var moveSuccess = 0;
 
         // check available pieces in each row
@@ -557,19 +556,7 @@ class PlayPhase {
             
         }
        
-=======
 
-    }
-    attemptEndGame() {
-        //See if some body won or if a draw has happened. If so change the phase 
-
-        //Conditions for winning the game. 
-        //The enemy flag is destroyed. 
-        //The flag cant be reached, only happens when the enemy is sourrouneded by pieces that would win against the players ramining pieces 
-        //
-
-
->>>>>>> 89f54a0d79998694a967d55c7b037812be23d72e
     }
     finishPhase() {
         game.phase = new EndPhase(this);
