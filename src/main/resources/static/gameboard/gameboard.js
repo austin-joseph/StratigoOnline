@@ -462,6 +462,7 @@ class PlayPhase {
         return false;
     }
     aiTurn() {
+        console.log('1111');
 
         var moveSuccess = 0;
 
@@ -538,11 +539,16 @@ class PlayPhase {
 
             if (playerFlag == 0 && aiFlag == 0) {
                 // AI won
-                finishPhase(2);
+                game.phase.finishPhase(2);
+                $('#gameEndsModal').modal('show');
+                $('#gameEndsModalBodyLabel').append("You Lost!");
+                console.log("dddd")
 
             } else if (playerFlag == 1 && aiFlag == 0) {
                 // player won
-                finishPhase(1);
+                game.phase.finishPhase(1);
+                $('#gameEndsModal').modal('show');
+                $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
 
             } else if (playerFlag == 1 && aiFlag == 1) {
                 // if both flags are still present check for other win conditions
@@ -563,12 +569,12 @@ class PlayPhase {
 
                 if (playerMovablePieces == 0 && aiMovablePieces == 1) {
                     // AI won
-                    finishPhase(2);
+                    game.phase.finishPhase(2);
                     $('#gameEndsModal').modal('show');
                     $('#gameEndsModalBodyLabel').append("You Lost!");
                 } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
                     // player won
-                    finishPhase(1);
+                    game.phase.finishPhase(1);
                     $('#gameEndsModal').modal('show');
                     $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
                 }
