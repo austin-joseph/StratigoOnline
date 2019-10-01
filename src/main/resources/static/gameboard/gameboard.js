@@ -309,7 +309,7 @@ class PlayPhase {
             var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam, 1);
             if (moveSucessful) {
                 //code to save move of user    
-                game.phase.saveMove(startCell, endCell, startPiece, endPiece);
+                game.phase.saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam);
 
                 saveBoardState();
                 //game.sendGameData();
@@ -321,13 +321,16 @@ class PlayPhase {
             }
         }
     }
-    saveMove(startCell, endCell, startPiece, endPiece) {
+    saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam) {
         var deadPiece;
+        var deadPieceTeam;
         if ($("#" + endCell).html() == startPiece) {
             deadPiece = endPiece;
+            deadPieceTeam = pieceTwoTeam;
         }
         else {
             deadPiece = startPiece;
+            deadPieceTeam = pieceOneTeam
         }
         game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell), deadPiece];
         game.history.moves.push(game.tempObject2);
