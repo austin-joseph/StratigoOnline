@@ -309,7 +309,7 @@ class PlayPhase {
             var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam, 1);
             if (moveSucessful) {
                 //code to save move of user    
-                game.phase.saveMove(startCell, endCell, startPiece, endPiece);
+                game.phase.saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam);
 
                 saveBoardState();
                 //game.sendGameData();
@@ -321,13 +321,16 @@ class PlayPhase {
             }
         }
     }
-    saveMove(startCell, endCell, startPiece, endPiece) {
+    saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam) {
         var deadPiece;
+        var deadPieceTeam;
         if ($("#" + endCell).html() == startPiece) {
             deadPiece = endPiece;
+            deadPieceTeam = pieceTwoTeam;
         }
         else {
             deadPiece = startPiece;
+            deadPieceTeam = pieceOneTeam
         }
         game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell), deadPiece];
         game.history.moves.push(game.tempObject2);
@@ -528,6 +531,76 @@ class PlayPhase {
         var playerMovablePieces = 0; // 0 is no more movable pieces
         var aiMovablePieces = 0; // 0 is no more movable pieces
 
+
+        // Check if enemy flag is destroyed
+        for (var row = 1; row <= 10; row++) {
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                if ($("#" + row + column).html() == "F") {
+                    if ($("#" + row + column).hasClass("gameboard-player")) {
+                        playerFlag = 1;
+                    } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
+                        aiFlag = 1;
+                    }
+                }
+            }
+        }
+
+
+        if (playerFlag == 0 && aiFlag == 1) {
+            // AI won
+            finishPhase(2);
+            $('#gameEndsModal').modal('show');
+            $('#gameEndsModalBodyLabel').append("You Lost!");
+
+        } else if (playerFlag == 1 && aiFlag == 0) {
+            // player won
+            finishPhase(1);
+            $('#gameEndsModal').modal('show');
+            $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
+            
+        } else if (playerFlag == 1 && aiFlag == 1) {
+            // if both flags are still present check for other win conditions
+
+            // check if all ur moveable pieces have been removed and you cannot attack move or attack on a turn
+            for (var row = 1; row <= 10; row++) {
+                for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                    var piece = $("#" + row + column).html();
+                    if (piece != "F" && piece != "B" && piece != "") {
+                        if ($("#" + row + column).hasClass("gameboard-player")) {
+                            playerMovablePieces = 1;
+                        } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
+                            aiMovablePieces = 1;
+                        }
+                    }
+                }
+            }
+            if (playerMovablePieces == 0 && aiMovablePieces == 1) {
+                // AI won
+                game.phase.finishPhase(2);
+                $('#gameEndsModal').modal('show');
+                $('#gameEndsModalBodyLabel').append("You Lost!");
+            } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
+                // player won
+                game.phase.finishPhase(1);
+                $('#gameEndsModal').modal('show');
+                $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
+            }
+        }
+    }
+
+    attemptEndGame() {
+        /** Conditions for winning the game.
+         The enemy flag is destroyed.
+         If all your movable pieces have been removed and you cannot move or attack on a turn, you lose.
+
+         **/
+
+
+        var playerFlag = 0;
+        var aiFlag = 0;
+        var playerMovablePieces = 0; // 0 is no more movable pieces
+        var aiMovablePieces = 0; // 0 is no more movable pieces
+
         // Check if enemy flag is destroyed
         for (var row = 1; row <= 10; row++) {
 
@@ -544,17 +617,13 @@ class PlayPhase {
                 }
             }
 
-            if (playerFlag == 0 && aiFlag == 1) {
+            if (playerFlag == 0 && aiFlag == 0) {
                 // AI won
-                game.phase.finishPhase(2);
-                $('#gameEndsModal').modal('show');
-                $('#gameEndsModalBodyLabel').append("You Lost!");
+                finishPhase(2);
 
             } else if (playerFlag == 1 && aiFlag == 0) {
                 // player won
-                game.phase.finishPhase(1);
-                $('#gameEndsModal').modal('show');
-                $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
+                finishPhase(1);
 
             } else if (playerFlag == 1 && aiFlag == 1) {
                 // if both flags are still present check for other win conditions
@@ -575,12 +644,12 @@ class PlayPhase {
 
                 if (playerMovablePieces == 0 && aiMovablePieces == 1) {
                     // AI won
-                    game.phase.finishPhase(2);
+                    finishPhase(2);
                     $('#gameEndsModal').modal('show');
                     $('#gameEndsModalBodyLabel').append("You Lost!");
                 } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
                     // player won
-                    game.phase.finishPhase(1);
+                    finishPhase(1);
                     $('#gameEndsModal').modal('show');
                     $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
                 }
@@ -588,7 +657,7 @@ class PlayPhase {
         }
     }
 
-    finishPhase(team){
+    finishPhase(team) {
         game.history.winner = team;
         game.phase = new EndPhase(this);
     }
