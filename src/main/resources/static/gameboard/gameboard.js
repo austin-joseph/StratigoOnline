@@ -474,7 +474,6 @@ class PlayPhase {
         return false;
     }
     aiTurn() {
-
         var moveSuccess = 0;
 
         // check available pieces in each row
@@ -519,11 +518,12 @@ class PlayPhase {
 
 
     }
+
     attemptEndGame() {
-        /** Conditions for winning the game. 
-         The enemy flag is destroyed. 
+        /** Conditions for winning the game.
+         The enemy flag is destroyed.
          If all your movable pieces have been removed and you cannot move or attack on a turn, you lose.
-         
+
          **/
 
 
@@ -532,52 +532,33 @@ class PlayPhase {
         var playerMovablePieces = 0; // 0 is no more movable pieces
         var aiMovablePieces = 0; // 0 is no more movable pieces
 
-
         // Check if enemy flag is destroyed
         for (var row = 1; row <= 10; row++) {
-            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                if ($("#" + row + column).html() == "F") {
-                    if ($("#" + row + column).hasClass("gameboard-player")) {
-                        playerFlag = 1;
-                    } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
-                        aiFlag = 1;
-                    }
-                }
-            }
-        }
 
-
-        if (playerFlag == 0 && aiFlag == 1) {
-            // AI won
-            finishPhase(2);
-
-        } else if (playerFlag == 1 && aiFlag == 0) {
-            // player won
-            finishPhase(1);
-
-        } else if (playerFlag == 1 && aiFlag == 1) {
-            // if both flags are still present check for other win conditions
-
-            // check if all ur moveable pieces have been removed and you cannot attack move or attack on a turn
+            // Check if enemy flag is destroyed
             for (var row = 1; row <= 10; row++) {
                 for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                    var piece = $("#" + row + column).html();
-                    if (piece != "F" && piece != "B" && piece != "") {
+                    if ($("#" + row + column).html() == "F") {
                         if ($("#" + row + column).hasClass("gameboard-player")) {
-                            playerMovablePieces = 1;
+                            playerFlag = 1;
                         } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
-                            aiMovablePieces = 1;
+                            aiFlag = 1;
                         }
                     }
                 }
             }
 
-            if (playerMovablePieces == 0 && aiMovablePieces == 1) {
+            if (playerFlag == 0 && aiFlag == 0) {
                 // AI won
-                finishPhase(2);
-            } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
+                game.phase.finishPhase(2);
+                $('#gameEndsModal').modal('show');
+                $('#gameEndsModalBodyLabel').append("You Lost!");
+
+            } else if (playerFlag == 1 && aiFlag == 0) {
                 // player won
-                finishPhase(1);
+                game.phase.finishPhase(1);
+                $('#gameEndsModal').modal('show');
+                $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
 
             } else if (playerFlag == 1 && aiFlag == 1) {
                 // if both flags are still present check for other win conditions
@@ -598,12 +579,12 @@ class PlayPhase {
 
                 if (playerMovablePieces == 0 && aiMovablePieces == 1) {
                     // AI won
-                    finishPhase(2);
+                    game.phase.finishPhase(2);
                     $('#gameEndsModal').modal('show');
                     $('#gameEndsModalBodyLabel').append("You Lost!");
                 } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
                     // player won
-                    finishPhase(1);
+                    game.phase.finishPhase(1);
                     $('#gameEndsModal').modal('show');
                     $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
                 }
@@ -635,4 +616,42 @@ $(document).ready(function () {
     });
 
     $('#gameEndsModal').modal('hide');
+
+    $("#autoSetup").click(function () {
+        this.keyTracker = {};
+        this.keyTracker["F"] = 1;
+        this.keyTracker["B"] = 6;
+        this.keyTracker["1"] = 1; //The Spy
+        this.keyTracker["2"] = 8; //The scout
+        this.keyTracker["3"] = 5; //The Miner
+        this.keyTracker["4"] = 4; //Sergeant
+        this.keyTracker["5"] = 4; //Lieutenant
+        this.keyTracker["6"] = 4; //Captain
+        this.keyTracker["7"] = 3; //Major
+        this.keyTracker["8"] = 2; //Colonel
+        this.keyTracker["9"] = 1; //General
+        this.keyTracker["10"] = 1; //Marshal
+        this.keyTracker[""] = 0; //Blank Space
+        // this.hiddenPieces = {};
+
+        var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+        for (var row = 7; row <= 10; row++) {
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                $("#" + row + column).addClass("gameboard-player gameboard-transparent");
+                $("#" + row + column).removeClass("gameboard-empty");
+                var randomKey = keys[Math.floor(Math.random() * keys.length)];
+                var value = this.keyTracker[randomKey];
+                while (value <= 0) {
+                    randomKey = keys[Math.floor(Math.random() * keys.length)];
+                    value = this.keyTracker[randomKey];
+                }
+                this.keyTracker[randomKey] = this.keyTracker[randomKey] - 1;
+                $("#" + row + column).html(randomKey);
+            }
+        }
+    });
+
+    $("#autoplay").click(function () {
+
+    });
 });

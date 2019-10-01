@@ -115,13 +115,13 @@ strong {
 }
 
 .instruction {
-    max-width: 25%;
+    width: 320px;
     font-size: 14px;
     margin: 0px 20px 0px 20px;
 }
 
 .move-history {
-    min-width: 320px;
+    width: 320px;
     margin: 0px 20px 0px 20px;
     overflow: hidden;
 }
