@@ -285,7 +285,7 @@ class PlayPhase {
             }
         }
         saveBoardState();
-        game.sendGameData();
+       // game.sendGameData();
     }
 
     onCellClicked() {
@@ -324,10 +324,12 @@ class PlayPhase {
             console.log("Move: " + moveSucessful);
             if (moveSucessful) {
                 //code to save move of user
-               // game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell)];
-               // game.history.append(tempObject2);
+                console.log("hmmmm");
+                game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell)];
+                game.history.moves.push(tempObject2);
                 
-                //saveBoardState();
+                saveBoardState();
+                game.sendGameData();
                 game.phase.attemptEndGame();
                 game.phase.aiTurn();
                 
