@@ -534,10 +534,19 @@ class PlayPhase {
 
         if (playerFlag == 0 && aiFlag == 0) {
             // AI won
+<<<<<<< HEAD
 
         } else if (playerFlag == 1 && aiFlag == 0) {
             // player won
 
+=======
+            finishPhase(2);
+            
+        } else if (playerFlag == 1 && aiFlag == 0) {
+            // player won
+            finihshPhase(1);
+            
+>>>>>>> 14b0f841fd851f2a6a60cb95264af716acaa6592
         } else if (playerFlag == 1 && aiFlag == 1) {
             // if both flags are still present check for other win conditions
 
@@ -557,8 +566,10 @@ class PlayPhase {
 
             if (playerMovablePieces == 0 && aiMovablePieces == 1) {
                 // AI won
+                finishPhase(2);
             } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
                 // player won
+                finishPhase(1);
             }
 
 
@@ -566,7 +577,7 @@ class PlayPhase {
 
 
     }
-    finishPhase() {
+    finishPhase(team) {
         game.phase = new EndPhase(this);
     }
 }
