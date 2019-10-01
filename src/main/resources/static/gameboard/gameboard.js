@@ -28,10 +28,8 @@ function createGameBoard() {
                 row = $($.parseHTML("<th class=\"gameboard-vertMarker\">" + (numbers + 1) + "</th>"));
             } else {
                 if ((numbers == 4 || numbers == 5) && (charAt == "C" || charAt == "D" || charAt == "G" || charAt == "H")) {
-
                     row = $($.parseHTML("<td class=\"gameboard-cell gameboard-impassable\" id=\"" + ((numbers + 1) + charAt) + "\"></td>"));
                 } else {
-
                     row = $($.parseHTML("<td class=\"gameboard-cell gameboard-empty\" id=\"" + ((numbers + 1) + charAt) + "\"></td>"));
                 }
                 row.click(this.onCellClicked);
@@ -60,7 +58,6 @@ function onCellClicked(e) {
         game.onCellClicked(e.currentTarget.id);
     }
 }
-
 
 class Game {
     constructor() {
@@ -154,11 +151,9 @@ class SetupPhase {
             if (game.currentlyHilightedCell != null) {
                 game.phase.placePieceAt(event.key.toUpperCase(), game.currentlyHilightedCell);
             }
-            // game.phase.lastPressedKey = event.key
         } else {
             if ((event.key >= "0" && event.key <= "9")) {
                 if (game.currentlyHilightedCell != null) game.phase.placePieceAt((event.key == 0) ? "10" : ("" + event.key), game.currentlyHilightedCell);
-                // game.phase.lastPressedKey = (value == 0) ? "10" : ("" + value);
             }
         }
     }
@@ -251,18 +246,18 @@ class PlayPhase {
         this.keyTracker[""] = 0; //Blank Space        
         // this.hiddenPieces = {};
 
-        var keys = "FB0123456789";
+        var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
         for (var row = 1; row <= 4; row++) {
             for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
                 $("#" + row + column).addClass("gameboard-enemy gameboard-transparent");
                 $("#" + row + column).removeClass("gameboard-empty");
-                var randomKey = keys.charAt(Math.random() * 11);
+                var randomKey = keys[Math.floor(Math.random() * keys.length)];
                 var value = this.keyTracker[randomKey];
                 while (value <= 0) {
-                    randomKey++;
-                    value = this.keyTracker[randomKey % 11];
+                    randomKey = keys[Math.floor(Math.random() * keys.length)];
+                    value = this.keyTracker[randomKey];
                 }
-                this.keyTracker[randomKey % 11] = this.keyTracker[randomKey % 11] - 1;
+                this.keyTracker[randomKey] = this.keyTracker[randomKey] - 1;
                 $("#" + row + column).html(randomKey);
             }
         }
@@ -328,14 +323,14 @@ class PlayPhase {
         if (endPieceTeam == currentTurn) {
             return false;
         }
-        if (startColumn != endColumn && startRow != endRow) {
-            return false;
-        }
         var startColumn = startCell.slice(0, startCell.length - 1);
         var startRow = startCell.slice(-1);
         var endColumn = endCell.slice(0, endCell.length - 1);
         var endRow = endCell.slice(-1);
 
+        if (startColumn != endColumn && startRow != endRow) {
+            return false;
+        }
         if (startPiece != "2" && (Math.abs(Number(startColumn) - Number(endColumn)) + Math.abs(startRow.charCodeAt(0) - endRow.charCodeAt(0))) > 1) {
             return false;
         }
@@ -458,6 +453,7 @@ class PlayPhase {
     }
     aiTurn() {
 
+<<<<<<< HEAD
         var moveSuccess = 0;
 
         // check available pieces in each row
@@ -561,6 +557,19 @@ class PlayPhase {
             
         }
        
+=======
+
+    }
+    attemptEndGame() {
+        //See if some body won or if a draw has happened. If so change the phase 
+
+        //Conditions for winning the game. 
+        //The enemy flag is destroyed. 
+        //The flag cant be reached, only happens when the enemy is sourrouneded by pieces that would win against the players ramining pieces 
+        //
+
+
+>>>>>>> 89f54a0d79998694a967d55c7b037812be23d72e
     }
     finishPhase() {
         game.phase = new EndPhase(this);
