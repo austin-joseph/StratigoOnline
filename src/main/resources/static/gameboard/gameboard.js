@@ -460,7 +460,20 @@ class PlayPhase {
         return false;
     }
     aiTurn() {
+        for (var row = 10; row <= 1; row--) {
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                //Find the first piece that can be moved. 
+                var piece = $("#" + row + column).html();
 
+                if ($("#" + row + column).hasClass("gameboard-enemy") && piece != "") {
+
+                    //We found valid pliece
+                    //Determine if theres a good palce to move it. 
+                    //First search if 
+
+                }
+            }
+        }
         var moveSuccess = 0;
 
         // check available pieces in each row
