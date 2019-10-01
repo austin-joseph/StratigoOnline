@@ -463,16 +463,109 @@ class PlayPhase {
     }
     aiTurn() {
 
+        var moveSuccess = 0;
+
+        // check available pieces in each row
+        var availablePieces = "";
+        for (var row = 10; row <= 1; row--) {
+
+            // if AI move is successful break out of loop to stop searching
+            if (moveSuccess == 1) {
+                break;
+            }
+
+            // check each row for available pieces
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                if ($("#" + row + column).hasClass("gameboard-enemy") && $("#" + row + column).html() != "") {
+
+                    availablePieces = availablePieces.concat($("#" + row + column).html());
+                }
+            }
+
+            // continuously select a random piece from available pieces to see if a move is possible
+            var move = 0;
+            while (move == 0) {
+
+                //move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn)
+
+                var piece = availablePieces.charAt(Math.floor(Math.random() * availabePieces.length));
+                // if move successful set the variables, so that loop breaks out on next iteration
+                if (move()) {
+                    move = 1;
+                    moveSuccuess == 1;
+
+                } else {
+                    // else remove piece from available pieces and try another pieces
+                    availablePieces = availablePieces.remove(piece, "");
+                }
+            }
+
+            // reset the availablePieces for next loop iteration
+            availablePieces = "";
+
+        }
+
 
     }
     attemptEndGame() {
-        //See if some body won or if a draw has happened. If so change the phase 
-
-        //Conditions for winning the game. 
-        //The enemy flag is destroyed. 
-        //The flag cant be reached, only happens when the enemy is sourrouneded by pieces that would win against the players ramining pieces 
-        //
-
+        /** Conditions for winning the game. 
+            The enemy flag is destroyed. 
+            If all your movable pieces have been removed and you cannot move or attack on a turn, you lose.
+        
+        **/
+       
+       
+       
+       var playerFlag = 0;
+       var aiFlag = 0;
+       var playerMovablePieces = 0; // 0 is no more movable pieces
+       var aiMovablePieces = 0; // 0 is no more movable pieces
+       
+       // Check if enemy flag is destroyed
+       for (var row = 1; row <= 10; row++) {
+            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                if($("#" + row + column).html() == "F") {
+                    if ($("#" + row + column).hasClass("gameboard-player")) {
+                        playerFlag = 1;
+                    } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
+                        aiFlag = 1;
+                    }
+                }
+            }
+        }
+        
+        if(playerFlag == 0 && aiFlag == 0) {
+            // AI won
+            
+        } else if (playerFlag == 1 && aiFlag == 0) {
+            // player won
+            
+        } else if (playerFlag == 1 && aiFlag == 1) {
+            // if both flags are still present check for other win conditions
+            
+            // check if all ur moveable pieces have been removed and you cannot attack move or attack on a turn
+            for (var row = 1; row <= 10; row++) {
+                for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                    var piece = $("#" + row + column).html();
+                    if (piece != "F" && piece != "B" && piece != "" ) {
+                        if(piece.hasClass("gameboard-player")) {
+                            playerMovablePieces = 1;
+                        } else if (piece.hasClass("gameboard-enemy")) {
+                            aiMovablePieces = 1;
+                        }
+                    }
+                }
+            }
+            
+            if (playerMovablePieces == 0 && aiMovablePieces == 1) {
+                // AI won
+            } else if (playerMovablePieces == 1 && aiMovablePieces == 0) {
+                // player won
+            }
+            
+            
+        }
+       
 
     }
     finishPhase() {
