@@ -65,7 +65,7 @@ class Game {
         this.history.boardState = [];
         this.history.moves = [];
         this.history.winner = "";
-
+        this.turnCount = 0;
     }
     begin() {
         this.phase = new SetupPhase(this);
@@ -309,7 +309,7 @@ class PlayPhase {
             var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam, 1);
             if (moveSucessful) {
                 //code to save move of user    
-                game.phase.saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam);
+                game.phase.saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam, 1);
 
                 saveBoardState();
                 //game.sendGameData();
@@ -321,12 +321,16 @@ class PlayPhase {
             }
         }
     }
-    saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam) {
+    saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam, pieceOwner) {
         var deadPiece;
         var deadPieceTeam;
         if ($("#" + endCell).html() == startPiece) {
             deadPiece = endPiece;
             deadPieceTeam = pieceTwoTeam;
+        }
+        else if (startPiece == endPiece) {
+            deadPiece = endPiece;
+            deadPieceTeam = 3;
         }
         else {
             deadPiece = startPiece;
@@ -334,7 +338,33 @@ class PlayPhase {
         }
         game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell), deadPiece];
         game.history.moves.push(game.tempObject2);
+
+        this.updateTable(startPiece, startCell, endCell, deadPiece, pieceOwner, deadPieceTeam);
     }
+
+    updateTable(startPiece, startCell, endCell, deadPiece, pieceOwner, deadPieceOwner) {
+        game.turnCount++;
+        if (deadPieceOwner == 3) {
+            $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #0062cc;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td><span style="color: #0062cc;">'+deadPiece+'</span><span>, </span><span style="color: red;">'+deadPiece+'</span></td></tr>');
+        } else {
+            if (pieceOwner == 1) {
+                if (deadPieceOwner == 1) {
+                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: #0062cc;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: #0062cc;">' + deadPiece + '</td></tr>');
+                } else {
+                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: #0062cc;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: red;">' + deadPiece + '</td></tr>');
+                }
+
+            } else { //pieceOwner == 2
+                if (deadPieceOwner == 1) {
+                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: #0062cc;">'+deadPiece+'</td></tr>');
+                } else {
+                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: red;">'+deadPiece+'</td></tr>');
+                }
+
+            }
+        }
+    }
+
     move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn) {
         if (startPiece == "" || startPiece == "B" || startPiece == "F") {
             return false;
@@ -618,35 +648,19 @@ $(document).ready(function () {
     $('#gameEndsModal').modal('hide');
 
     $("#autoSetup").click(function () {
-        this.keyTracker = {};
-        this.keyTracker["F"] = 1;
-        this.keyTracker["B"] = 6;
-        this.keyTracker["1"] = 1; //The Spy
-        this.keyTracker["2"] = 8; //The scout
-        this.keyTracker["3"] = 5; //The Miner
-        this.keyTracker["4"] = 4; //Sergeant
-        this.keyTracker["5"] = 4; //Lieutenant
-        this.keyTracker["6"] = 4; //Captain
-        this.keyTracker["7"] = 3; //Major
-        this.keyTracker["8"] = 2; //Colonel
-        this.keyTracker["9"] = 1; //General
-        this.keyTracker["10"] = 1; //Marshal
-        this.keyTracker[""] = 0; //Blank Space
-        // this.hiddenPieces = {};
-
         var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
         for (var row = 7; row <= 10; row++) {
             for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
                 $("#" + row + column).addClass("gameboard-player gameboard-transparent");
                 $("#" + row + column).removeClass("gameboard-empty");
                 var randomKey = keys[Math.floor(Math.random() * keys.length)];
-                var value = this.keyTracker[randomKey];
+                var value = game.phase.keyTracker[randomKey];
                 while (value <= 0) {
                     randomKey = keys[Math.floor(Math.random() * keys.length)];
-                    value = this.keyTracker[randomKey];
+                    value = game.phase.keyTracker[randomKey];
                 }
-                this.keyTracker[randomKey] = this.keyTracker[randomKey] - 1;
                 $("#" + row + column).html(randomKey);
+                game.phase.placePieceAt(randomKey, row + column);
             }
         }
     });
