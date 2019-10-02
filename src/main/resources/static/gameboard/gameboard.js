@@ -65,6 +65,8 @@ class Game {
         this.history.boardState = [];
         this.history.moves = [];
         this.history.winner = "";
+        this.history.userPiecesLost = [];
+        this.history.aiPiecesLost = [];
 
     }
     begin() {
@@ -332,8 +334,17 @@ class PlayPhase {
             deadPiece = startPiece;
             deadPieceTeam = pieceOneTeam
         }
+        if (deadPiece != "") {
+            if (deadPieceTeam = 1) {
+                game.history.userPiecesLost.push(deadPiece);
+            }
+            else {
+                game.history.aiPiecesLost.push(deadPiece);
+            }
+        }
         game.tempObject2 = [startCell, endCell, $("#" + endCell).html(), game.getOwningPlayer(endCell), deadPiece];
         game.history.moves.push(game.tempObject2);
+        
     }
     move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn) {
         if (startPiece == "" || startPiece == "B" || startPiece == "F") {
