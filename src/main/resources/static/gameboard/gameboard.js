@@ -409,12 +409,13 @@ class PlayPhase {
             if (endPiece == "B") {
                 if (currentTurn == 1) {
                     $("#" + startCell).removeClass("gameboard-player");
-                    $("#" + endCell).removeClass("gameboard-transparent");
+                    $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + endCell).addClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else if (currentTurn == 2) {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).removeClass("gameboard-player");
                     $("#" + endCell).addClass("gameboard-enemy");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
@@ -511,6 +512,7 @@ class PlayPhase {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + endCell).removeClass("gameboard-player");
                     $("#" + endCell).addClass("gameboard-enemy");
+                    $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else {
