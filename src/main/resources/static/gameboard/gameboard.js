@@ -426,12 +426,13 @@ class PlayPhase {
                 // if spy attacks marshall, marshall is destroyed and removed
                 if (currentTurn == 1) {
                     $("#" + startCell).removeClass("gameboard-player");
-                    $("#" + endCell).removeClass("gameboard-transparent");
+                    $("#" + endCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + endCell).addClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else if (currentTurn == 2) {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).removeClass("gameboard-player");
                     $("#" + endCell).addClass("gameboard-enemy");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
@@ -466,13 +467,12 @@ class PlayPhase {
             } else if (currentTurn == 2) {
                 $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
                 $("#" + endCell).removeClass("gameboard-player");
-                $("#" + endCell).addClass("gameboard-enemy ");
+                $("#" + endCell).addClass("gameboard-enemy");
                 $("#" + startCell).html("");
                 $("#" + endCell).html(startPiece);
             }
             return true;
         } else if (endPiece == "B") {
-
             // if bomb is attacked
             if (currentTurn == 1) {
                 $("#" + startCell).removeClass("gameboard-player");
@@ -480,7 +480,6 @@ class PlayPhase {
                 $("#" + startCell).html("");
             } else if (currentTurn == 2) {
                 $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
-                $("#" + endCell).addClass("gameboard-enemy");
                 $("#" + startCell).html("");
             }
             return true;
@@ -509,8 +508,9 @@ class PlayPhase {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + startCell).html("");
                 } else if (Number(startPiece) > Number(endPiece)) {
-                    $("#" + startCell).addClass("gameboard-enemy");
+                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + endCell).removeClass("gameboard-player");
+                    $("#" + endCell).addClass("gameboard-enemy");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else {

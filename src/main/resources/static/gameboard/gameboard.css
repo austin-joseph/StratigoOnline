@@ -66,6 +66,11 @@
 
 .gameboard-selected.gameboard-enemy {
     background-color: #b3b7bb;
+    color: yellow;
+}
+
+.gameboard-selected.gameboard-enemy.gameboard-transparent {
+    background-color: #b3b7bb;
     color: #b3b7bb;
 }
 
