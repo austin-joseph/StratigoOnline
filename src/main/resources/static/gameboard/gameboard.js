@@ -384,6 +384,10 @@ class PlayPhase {
         if (startPiece == "" || startPiece == "B" || startPiece == "F") {
             return false;
         }
+        if (startCell == "5C" || startCell == "5D" || startCell == "6C" || startCell == "6D" || startCell == "5G" || startCell == "5H" || startCell == "6G" || startCell == "6H" ||
+            endCell == "5C" || endCell == "5D" || endCell == "6C" || endCell == "6D" || endCell == "5G" || endCell == "5H" || endCell == "6G" || endCell == "6H") {
+            return false;
+        }
         if (startPieceTeam != currentTurn) {
             return false;
         }
@@ -571,7 +575,7 @@ class PlayPhase {
 
                         if (moveSucessful) {
 
-                            saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
+                            game.phase.saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
                             return true;
                         }
                     }
@@ -709,19 +713,24 @@ $(document).ready(function() {
     $('#gameEndsModal').modal('hide');
 
     $("#autoSetup").click(function() {
-        var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-        for (var row = 7; row <= 10; row++) {
-            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                $("#" + row + column).addClass("gameboard-player gameboard-transparent");
-                $("#" + row + column).removeClass("gameboard-empty");
-                var randomKey = keys[Math.floor(Math.random() * keys.length)];
-                var value = game.phase.keyTracker[randomKey];
-                while (value <= 0) {
-                    randomKey = keys[Math.floor(Math.random() * keys.length)];
-                    value = game.phase.keyTracker[randomKey];
+
+        if (game.phase instanceof SetupPhase) {
+            var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+            for (var row = 7; row <= 10; row++) {
+                for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                    if ($("#" + row + column).html() != "") {
+                        continue;
+                    }
+                    $("#" + row + column).addClass("gameboard-player");
+                    $("#" + row + column).removeClass("gameboard-empty");
+                    var randomKey = keys[Math.floor(Math.random() * keys.length)];
+                    var value = game.phase.keyTracker[randomKey];
+                    while (value <= 0) {
+                        randomKey = keys[Math.floor(Math.random() * keys.length)];
+                        value = game.phase.keyTracker[randomKey];
+                    }
+                    game.phase.placePieceAt(randomKey, row + column);
                 }
-                $("#" + row + column).html(randomKey);
-                game.phase.placePieceAt(randomKey, row + column);
             }
         }
     });
