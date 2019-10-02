@@ -56,9 +56,12 @@ public class GameController {
         return game;
     }
     
-    @RequestMapping(value = "/pastgames", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Game> getPlayerGames() {
-        return gameService.getPlayerGames(userService.getLoggedUser());
+    @RequestMapping(value = "/pastgames", method = RequestMethod.GET )
+    public ModelAndView getPlayerGames() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("pastgames");
+        modelAndView.addObject("gamesList", gameService.getPlayerGames(userService.getLoggedUser()));
+        return modelAndView;
     }
     
     @RequestMapping(value = "/recordGame", method = RequestMethod.POST)
@@ -70,11 +73,7 @@ public class GameController {
         System.out.print(jsonText);
         return game;
     }
-
-    @RequestMapping(value = "/pastgames", method = RequestMethod.GET)
-    public List<Game> getAllGames() {
-        return gameService.getAllGames();
-    }
+    
 
 
 }

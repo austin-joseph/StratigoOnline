@@ -254,8 +254,7 @@ class PlayPhase {
         this.keyTracker["8"] = 2; //Colonel
         this.keyTracker["9"] = 1; //General
         this.keyTracker["10"] = 1; //Marshal
-        this.keyTracker[""] = 0; //Blank Space        
-        // this.hiddenPieces = {};
+        this.keyTracker[""] = 0; //Blank Space
 
         var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
         for (var row = 1; row <= 4; row++) {
@@ -330,28 +329,23 @@ class PlayPhase {
         if ($("#" + endCell).html() == startPiece) {
             deadPiece = endPiece;
             deadPieceTeam = pieceTwoTeam;
-        } 
-        else  if (startPiece == endPiece ) {
+        } else if (startPiece == endPiece) {
             deadPiece = endPiece;
             deadPieceTeam = 3;
-        }
-        else if (startPiece == endPiece) {
+        } else if (startPiece == endPiece) {
             deadPiece = endPiece;
             deadPieceTeam = 3;
-        }
-        else {
+        } else {
             deadPiece = startPiece;
             deadPieceTeam = pieceOneTeam
         }
-        
+
         if (deadPiece != "") {
             if (deadPieceTeam == 1) {
                 game.history.userPiecesLost.push(deadPiece);
-            }
-            else if (deadPieceTeam == 2) {
+            } else if (deadPieceTeam == 2) {
                 game.history.aiPiecesLost.push(deadPiece);
-            }
-            else if (deadPieceTeam == 3) {
+            } else if (deadPieceTeam == 3) {
                 game.history.userPiecesLost.push(deadPiece);
                 game.history.aiPiecesLost.push(deadPiece);
             }
@@ -365,7 +359,7 @@ class PlayPhase {
     updateTable(startPiece, startCell, endCell, deadPiece, pieceOwner, deadPieceOwner) {
         game.turnCount++;
         if (deadPieceOwner == 3) {
-            $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #0062cc;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td><span style="color: #0062cc;">'+deadPiece+'</span><span>, </span><span style="color: red;">'+deadPiece+'</span></td></tr>');
+            $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: #0062cc;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td><span style="color: #0062cc;">' + deadPiece + '</span><span>, </span><span style="color: red;">' + deadPiece + '</span></td></tr>');
         } else {
             if (pieceOwner == 1) {
                 if (deadPieceOwner == 1) {
@@ -376,9 +370,9 @@ class PlayPhase {
 
             } else { //pieceOwner == 2
                 if (deadPieceOwner == 1) {
-                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: #0062cc;">'+deadPiece+'</td></tr>');
+                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: red;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: #0062cc;">' + deadPiece + '</td></tr>');
                 } else {
-                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: red;">'+deadPiece+'</td></tr>');
+                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: red;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: red;">' + deadPiece + '</td></tr>');
                 }
 
             }
@@ -387,6 +381,10 @@ class PlayPhase {
 
     move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn) {
         if (startPiece == "" || startPiece == "B" || startPiece == "F") {
+            return false;
+        }
+        if (startCell == "5C" || startCell == "5D" || startCell == "6C" || startCell == "6D" || startCell == "5G" || startCell == "5H" || startCell == "6G" || startCell == "6H" ||
+            endCell == "5C" || endCell == "5D" || endCell == "6C" || endCell == "6D" || endCell == "5G" || endCell == "5H" || endCell == "6G" || endCell == "6H") {
             return false;
         }
         if (startPieceTeam != currentTurn) {
@@ -411,6 +409,7 @@ class PlayPhase {
             if (endPiece == "B") {
                 if (currentTurn == 1) {
                     $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
                     $("#" + endCell).addClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
@@ -427,12 +426,13 @@ class PlayPhase {
                 // if spy attacks marshall, marshall is destroyed and removed
                 if (currentTurn == 1) {
                     $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
                     $("#" + endCell).addClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else if (currentTurn == 2) {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
-                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 }
@@ -489,6 +489,7 @@ class PlayPhase {
             if (currentTurn == 1) {
                 if (Number(startPiece) < Number(endPiece)) {
                     $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
                     $("#" + startCell).html("");
                 } else if (Number(startPiece) > Number(endPiece)) {
                     $("#" + startCell).removeClass("gameboard-player");
@@ -508,13 +509,13 @@ class PlayPhase {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + startCell).html("");
                 } else if (Number(startPiece) > Number(endPiece)) {
-                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).removeClass("gameboard-player");
                     $("#" + endCell).addClass("gameboard-enemy");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
-                    $("#" + endCell).removeClass("gameboard-enemy");
+                    $("#" + endCell).removeClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html("");
                 }
@@ -524,12 +525,112 @@ class PlayPhase {
         return false;
     }
 
-    findPieces() {
+    listValidMoves(cell) {
+        var column = cell.slice(-1);
+        var row = cell.slice(0, cell.length - 1);
 
+        var output = [];
+
+        for (var x = -1; x < 2; x++) {
+            var checkingColumn = column.charCodeAt(0) + x;
+            if (checkingColumn < "A".charCodeAt(0) || checkingColumn > "J".charCodeAt(0)) {
+                continue;
+            }
+            for (var y = -1; y < 2; y++) {
+                if (Math.abs(x) + Math.abs(y) != 2 && Math.abs(x) + Math.abs(y) != 0) {
+
+                    var checkingRow = Number(row) + y;
+                    if (checkingRow < 1 || checkingRow > 10) {
+                        continue;
+                    }
+                    // console.log(x + " " + y);
+                    output.push(checkingRow + String.fromCharCode(checkingColumn));
+                }
+            }
+        }
+
+        var temp = [];
+        while (output.length > 0) {
+            temp.push(output.splice(Math.random() * output.length, 1)[0]);
+        }
+        return temp;
+    }
+
+    autoPlayPlayer() {
+        var passedPieces = [];
+        while (passedPieces.length <= 40) {
+
+            var row = Math.floor(Math.random() * 10);
+            var column = String.fromCharCode("A".charCodeAt(0) + Math.floor(Math.random() * 10));
+            if (passedPieces.includes(row + column)) {
+                continue;
+            } else {
+                passedPieces.push(row + column);
+            }
+            //Find the first piece that can be moved. 
+            var piece = $("#" + row + column).html();
+
+            if ($("#" + row + column).hasClass("gameboard-player") && piece != "" && piece != "B" && piece != "F") {
+
+                var possibleMoves = game.phase.listValidMoves(row + column, piece);
+
+                for (var i = 0; i < possibleMoves.length; i++) {
+                    var startCell = row + column;
+                    var endCell = possibleMoves[i];
+                    var startPiece = piece;
+                    var endPiece = $("#" + possibleMoves[i]).html();
+                    var startOwningPlayer = game.getOwningPlayer(row + column);
+                    var endOwningPlayer = game.getOwningPlayer(possibleMoves[i]);
+                    var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 1);
+                    if (moveSucessful) {
+                        game.phase.saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 1);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     aiTurn() {
+        var passedPieces = [];
+        while (passedPieces.length <= 40) {
 
+            var row = Math.floor(Math.random() * 10);
+            var column = String.fromCharCode("A".charCodeAt(0) + Math.floor(Math.random() * 10));
+            if (passedPieces.includes(row + column)) {
+                continue;
+            } else {
+                passedPieces.push(row + column);
+            }
+            //Find the first piece that can be moved. 
+            var piece = $("#" + row + column).html();
+
+            if ($("#" + row + column).hasClass("gameboard-enemy") && piece != "" && piece != "B" && piece != "F") {
+
+                var possibleMoves = game.phase.listValidMoves(row + column, piece);
+
+                for (var i = 0; i < possibleMoves.length; i++) {
+                    var startCell = row + column;
+                    var endCell = possibleMoves[i];
+                    var startPiece = piece;
+                    var endPiece = $("#" + possibleMoves[i]).html();
+                    var startOwningPlayer = game.getOwningPlayer(row + column);
+                    var endOwningPlayer = game.getOwningPlayer(possibleMoves[i]);
+                    var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
+                    if (moveSucessful) {
+                        game.phase.saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // for (var row = 4; row >= 1; row--) {
+        //     for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+
+        //     }
+        // }
     }
 
     attemptEndGame() {
@@ -646,25 +747,46 @@ $(document).ready(function() {
 
     $('#gameEndsModal').modal('hide');
 
-    $("#autoSetup").click(function () {
-        var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-        for (var row = 7; row <= 10; row++) {
-            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                $("#" + row + column).addClass("gameboard-player gameboard-transparent");
-                $("#" + row + column).removeClass("gameboard-empty");
-                var randomKey = keys[Math.floor(Math.random() * keys.length)];
-                var value = game.phase.keyTracker[randomKey];
-                while (value <= 0) {
-                    randomKey = keys[Math.floor(Math.random() * keys.length)];
-                    value = game.phase.keyTracker[randomKey];
+    $("#autoSetup").click(function() {
+
+        if (game.phase instanceof SetupPhase) {
+            var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+            for (var row = 7; row <= 10; row++) {
+                for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+                    if ($("#" + row + column).html() != "") {
+                        continue;
+                    }
+                    $("#" + row + column).addClass("gameboard-player");
+                    $("#" + row + column).removeClass("gameboard-empty");
+                    var randomKey = keys[Math.floor(Math.random() * keys.length)];
+                    var value = game.phase.keyTracker[randomKey];
+                    while (value <= 0) {
+                        randomKey = keys[Math.floor(Math.random() * keys.length)];
+                        value = game.phase.keyTracker[randomKey];
+                    }
+                    game.phase.placePieceAt(randomKey, row + column);
                 }
-                $("#" + row + column).html(randomKey);
-                game.phase.placePieceAt(randomKey, row + column);
             }
+            game.phase.finishPhase();
         }
     });
 
     $("#autoplay").click(function() {
+        if (game.phase instanceof PlayPhase) {
+            var moveHappened = game.phase.autoPlayPlayer();
 
+            if (moveHappened) {
+                //code to save move of user    
+                saveBoardState();
+                //game.sendGameData();
+                if (!game.phase.attemptEndGame()) {
+
+                    game.phase.aiTurn();
+
+                    saveBoardState();
+                    game.phase.attemptEndGame();
+                }
+            }
+        }
     });
 });
