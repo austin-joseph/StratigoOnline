@@ -330,28 +330,23 @@ class PlayPhase {
         if ($("#" + endCell).html() == startPiece) {
             deadPiece = endPiece;
             deadPieceTeam = pieceTwoTeam;
-        } 
-        else  if (startPiece == endPiece ) {
+        } else if (startPiece == endPiece) {
             deadPiece = endPiece;
             deadPieceTeam = 3;
-        }
-        else if (startPiece == endPiece) {
+        } else if (startPiece == endPiece) {
             deadPiece = endPiece;
             deadPieceTeam = 3;
-        }
-        else {
+        } else {
             deadPiece = startPiece;
             deadPieceTeam = pieceOneTeam
         }
-        
+
         if (deadPiece != "") {
             if (deadPieceTeam == 1) {
                 game.history.userPiecesLost.push(deadPiece);
-            }
-            else if (deadPieceTeam == 2) {
+            } else if (deadPieceTeam == 2) {
                 game.history.aiPiecesLost.push(deadPiece);
-            }
-            else if (deadPieceTeam == 3) {
+            } else if (deadPieceTeam == 3) {
                 game.history.userPiecesLost.push(deadPiece);
                 game.history.aiPiecesLost.push(deadPiece);
             }
@@ -365,7 +360,7 @@ class PlayPhase {
     updateTable(startPiece, startCell, endCell, deadPiece, pieceOwner, deadPieceOwner) {
         game.turnCount++;
         if (deadPieceOwner == 3) {
-            $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #0062cc;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td><span style="color: #0062cc;">'+deadPiece+'</span><span>, </span><span style="color: red;">'+deadPiece+'</span></td></tr>');
+            $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: #0062cc;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td><span style="color: #0062cc;">' + deadPiece + '</span><span>, </span><span style="color: red;">' + deadPiece + '</span></td></tr>');
         } else {
             if (pieceOwner == 1) {
                 if (deadPieceOwner == 1) {
@@ -376,9 +371,9 @@ class PlayPhase {
 
             } else { //pieceOwner == 2
                 if (deadPieceOwner == 1) {
-                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: #0062cc;">'+deadPiece+'</td></tr>');
+                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: #red;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: #0062cc;">' + deadPiece + '</td></tr>');
                 } else {
-                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: red;">'+deadPiece+'</td></tr>');
+                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: #red;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: red;">' + deadPiece + '</td></tr>');
                 }
 
             }
@@ -550,7 +545,7 @@ class PlayPhase {
 
         var temp = [];
         while (output.length > 0) {
-            temp.push(output.splice(Math.random() * output.length), 1);
+            temp.push(output.splice(Math.random() * output.length)[0], 1);
         }
         return temp;
     }
@@ -572,13 +567,13 @@ class PlayPhase {
                         var endPiece = $("#" + possibleMoves[i]).html();
                         var startOwningPlayer = game.getOwningPlayer(row + column);
                         var endOwningPlayer = game.getOwningPlayer(possibleMoves[i]);
-                        // var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
+                        var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
 
-                        // if (moveSucessful) {
+                        if (moveSucessful) {
 
-                        // saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
-                        // return true;
-                        // }
+                            saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
+                            return true;
+                        }
                     }
                     //We found valid pliece
                     //Determine if theres a good palce to move it. 
@@ -713,7 +708,7 @@ $(document).ready(function() {
 
     $('#gameEndsModal').modal('hide');
 
-    $("#autoSetup").click(function () {
+    $("#autoSetup").click(function() {
         var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
         for (var row = 7; row <= 10; row++) {
             for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
