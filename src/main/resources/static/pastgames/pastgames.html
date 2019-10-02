@@ -20,24 +20,8 @@
 <body>
 <div class="noselect">
     <div class="top-toolbar d-flex justify-content-between">
-        <i class="fas fa-arrow-left icon-style" data-toggle="modal" data-target="#homeBtnModal" title="Home"></i>
-        <!-- Home button Modal -->
-        <div class="modal fade modal-style" id="homeBtnModal" tabindex="-1" role="dialog" aria-labelledby="homeBtnModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="homeBtnModalLabel">Go to Dashboard?</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="/player">OK</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <a href="/player"><i class="fas fa-arrow-left icon-style" data-toggle="tooltip" title="Home"></i></a>
+
 
         <div class="header-style">View Past Games</div>
 
