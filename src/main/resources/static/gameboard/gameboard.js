@@ -509,8 +509,8 @@ class PlayPhase {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + startCell).html("");
                 } else if (Number(startPiece) > Number(endPiece)) {
-                    $("#" + startCell).removeClass("gameboard-player");
-                    $("#" + endCell).addClass("gameboard-enemy");
+                    $("#" + startCell).addClass("gameboard-enemy");
+                    $("#" + endCell).removeClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else {
