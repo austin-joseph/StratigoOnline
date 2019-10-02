@@ -69,6 +69,13 @@ public class GameController {
         Game game = gameService.addGame(user.getEmail(), jsonText);
         System.out.print(jsonText);
         return game;
-    }    
+    }
+    
+    @RequestMapping(value = "/pastgames", method = RequestMethod.GET)
+    public List<Game> getAllGames() {
+        return gameService.getAllGames();
+    }
+
+    
 }
 
