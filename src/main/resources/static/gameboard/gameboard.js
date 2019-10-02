@@ -376,9 +376,9 @@ class PlayPhase {
 
             } else { //pieceOwner == 2
                 if (deadPieceOwner == 1) {
-                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: #0062cc;">'+deadPiece+'</td></tr>');
+                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: #0062cc;">'+deadPiece+'</td></tr>');
                 } else {
-                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: #red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: red;">'+deadPiece+'</td></tr>');
+                    $('#tbody-move-history').prepend('<tr><td><strong>'+game.turnCount+'</strong></td><td style="color: red;">'+startPiece+'</td><td>'+startCell+'</td><td>'+endCell+'</td><td style="color: red;">'+deadPiece+'</td></tr>');
                 }
 
             }
@@ -643,14 +643,6 @@ class PlayPhase {
 $(document).ready(function() {
     createGameBoard();
     startGame();
-
-    $("#backward").click(function() {
-        console.log("BACKWARD");
-    });
-
-    $("#forward").click(function() {
-        console.log("FORWARD");
-    });
 
     $('#gameEndsModal').modal('hide');
 
