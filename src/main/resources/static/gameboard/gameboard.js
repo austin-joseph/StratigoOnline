@@ -254,8 +254,7 @@ class PlayPhase {
         this.keyTracker["8"] = 2; //Colonel
         this.keyTracker["9"] = 1; //General
         this.keyTracker["10"] = 1; //Marshal
-        this.keyTracker[""] = 0; //Blank Space        
-        // this.hiddenPieces = {};
+        this.keyTracker[""] = 0; //Blank Space
 
         var keys = ["F", "B", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
         for (var row = 1; row <= 4; row++) {
@@ -371,9 +370,9 @@ class PlayPhase {
 
             } else { //pieceOwner == 2
                 if (deadPieceOwner == 1) {
-                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: #red;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: #0062cc;">' + deadPiece + '</td></tr>');
+                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: red;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: #0062cc;">' + deadPiece + '</td></tr>');
                 } else {
-                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: #red;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: red;">' + deadPiece + '</td></tr>');
+                    $('#tbody-move-history').prepend('<tr><td><strong>' + game.turnCount + '</strong></td><td style="color: red;">' + startPiece + '</td><td>' + startCell + '</td><td>' + endCell + '</td><td style="color: red;">' + deadPiece + '</td></tr>');
                 }
 
             }
@@ -410,6 +409,7 @@ class PlayPhase {
             if (endPiece == "B") {
                 if (currentTurn == 1) {
                     $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
                     $("#" + endCell).addClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
@@ -426,6 +426,7 @@ class PlayPhase {
                 // if spy attacks marshall, marshall is destroyed and removed
                 if (currentTurn == 1) {
                     $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
                     $("#" + endCell).addClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
@@ -488,6 +489,7 @@ class PlayPhase {
             if (currentTurn == 1) {
                 if (Number(startPiece) < Number(endPiece)) {
                     $("#" + startCell).removeClass("gameboard-player");
+                    $("#" + endCell).removeClass("gameboard-transparent");
                     $("#" + startCell).html("");
                 } else if (Number(startPiece) > Number(endPiece)) {
                     $("#" + startCell).removeClass("gameboard-player");
@@ -507,13 +509,13 @@ class PlayPhase {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
                     $("#" + startCell).html("");
                 } else if (Number(startPiece) > Number(endPiece)) {
-                    $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
+                    $("#" + startCell).removeClass("gameboard-player");
                     $("#" + endCell).addClass("gameboard-enemy");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
-                    $("#" + endCell).removeClass("gameboard-enemy");
+                    $("#" + endCell).removeClass("gameboard-player");
                     $("#" + startCell).html("");
                     $("#" + endCell).html("");
                 }
@@ -552,6 +554,42 @@ class PlayPhase {
             temp.push(output.splice(Math.random() * output.length, 1)[0]);
         }
         return temp;
+    }
+
+    autoPlayPlayer() {
+        var passedPieces = [];
+        while (passedPieces.length <= 40) {
+
+            var row = Math.floor(Math.random() * 10);
+            var column = String.fromCharCode("A".charCodeAt(0) + Math.floor(Math.random() * 10));
+            if (passedPieces.includes(row + column)) {
+                continue;
+            } else {
+                passedPieces.push(row + column);
+            }
+            //Find the first piece that can be moved. 
+            var piece = $("#" + row + column).html();
+
+            if ($("#" + row + column).hasClass("gameboard-player") && piece != "" && piece != "B" && piece != "F") {
+
+                var possibleMoves = game.phase.listValidMoves(row + column, piece);
+
+                for (var i = 0; i < possibleMoves.length; i++) {
+                    var startCell = row + column;
+                    var endCell = possibleMoves[i];
+                    var startPiece = piece;
+                    var endPiece = $("#" + possibleMoves[i]).html();
+                    var startOwningPlayer = game.getOwningPlayer(row + column);
+                    var endOwningPlayer = game.getOwningPlayer(possibleMoves[i]);
+                    var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 1);
+                    if (moveSucessful) {
+                        game.phase.saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 1);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     aiTurn() {
@@ -737,10 +775,26 @@ $(document).ready(function() {
                     game.phase.placePieceAt(randomKey, row + column);
                 }
             }
+            game.phase.finishPhase();
         }
     });
 
     $("#autoplay").click(function() {
+        if (game.phase instanceof PlayPhase) {
+            var moveHappened = game.phase.autoPlayPlayer();
 
+            if (moveHappened) {
+                //code to save move of user    
+                saveBoardState();
+                //game.sendGameData();
+                if (!game.phase.attemptEndGame()) {
+
+                    game.phase.aiTurn();
+
+                    saveBoardState();
+                    game.phase.attemptEndGame();
+                }
+            }
+        }
     });
 });
