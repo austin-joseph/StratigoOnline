@@ -341,13 +341,13 @@ class PlayPhase {
         }
         
         if (deadPiece != "") {
-            if (deadPieceTeam = 1) {
+            if (deadPieceTeam == 1) {
                 game.history.userPiecesLost.push(deadPiece);
             }
-            else if (deadPieceTeam = 2) {
+            else if (deadPieceTeam == 2) {
                 game.history.aiPiecesLost.push(deadPiece);
             }
-            else if (deadPieceTeam = 3) {
+            else if (deadPieceTeam == 3) {
                 game.history.userPiecesLost.push(deadPiece);
                 game.history.aiPiecesLost.push(deadPiece);
             }
