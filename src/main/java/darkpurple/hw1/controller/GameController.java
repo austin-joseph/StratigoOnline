@@ -5,6 +5,8 @@
  */
 package darkpurple.hw1.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import darkpurple.hw1.entity.Game;
 import darkpurple.hw1.entity.User;
 import darkpurple.hw1.service.GameService;
@@ -55,13 +57,18 @@ public class GameController {
 
         return game;
     }
-    
-    @RequestMapping(value = "/pastgames", method = RequestMethod.GET )
-    public ModelAndView getPlayerGames() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pastgames");
-        modelAndView.addObject("gamesList", gameService.getPlayerGames(userService.getLoggedUser()));
-        return modelAndView;
+
+    @RequestMapping(value = "/getgames", method = RequestMethod.POST )
+    public String getPlayerGames() {
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println(gameService.getPlayerGames(userService.getLoggedUser()));
+
+        try {
+            return mapper.writeValueAsString(gameService.getPlayerGames(userService.getLoggedUser()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "Error";
+        }
     }
     
     @RequestMapping(value = "/recordGame", method = RequestMethod.POST)
