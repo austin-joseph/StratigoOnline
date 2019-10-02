@@ -85,7 +85,7 @@ class Game {
             if (game.currentlyHilightedCell != null) {
                 $("#" + game.currentlyHilightedCell).addClass("gameboard-selected");
             }
-            if (game.phase.onCellClicked != null) {
+            if (game.phase.onCellClicked != null && !game.finished) {
                 game.phase.onCellClicked(id);
             }
         }
@@ -182,7 +182,7 @@ class SetupPhase {
     placePieceAt(piece, cell) {
         //Dont allow if they try to place something into the impassible cells or on the enemy side.
 
-        var row = cell.split(cell.length - 1)[0];
+        var row = cell.slice(0, cell.length - 1);
         if (row < 7) {
             return;
         }
@@ -204,7 +204,6 @@ class SetupPhase {
                     $("#" + cell).addClass("gameboard-empty");
                 }
                 $("#" + cell).html(piece);
-
             }
         }
         this.updateInfoSection();
@@ -273,7 +272,6 @@ class PlayPhase {
             }
         }
         saveBoardState();
-        // game.sendGameData();
     }
 
     onCellClicked() {
@@ -315,22 +313,24 @@ class PlayPhase {
 
                 saveBoardState();
                 //game.sendGameData();
-                game.phase.attemptEndGame();
-                game.phase.aiTurn();
+                if (!game.phase.attemptEndGame()) {
 
-                saveBoardState();
-                game.phase.attemptEndGame();
+                    game.phase.aiTurn();
+
+                    saveBoardState();
+                    game.phase.attemptEndGame();
+                }
             }
         }
     }
+
     saveMove(startCell, endCell, startPiece, endPiece, pieceOneTeam, pieceTwoTeam) {
         var deadPiece;
         var deadPieceTeam;
         if ($("#" + endCell).html() == startPiece) {
             deadPiece = endPiece;
             deadPieceTeam = pieceTwoTeam;
-        }
-        else {
+        } else {
             deadPiece = startPiece;
             deadPieceTeam = pieceOneTeam
         }
@@ -346,6 +346,7 @@ class PlayPhase {
         game.history.moves.push(game.tempObject2);
         
     }
+
     move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn) {
         if (startPiece == "" || startPiece == "B" || startPiece == "F") {
             return false;
@@ -427,7 +428,7 @@ class PlayPhase {
             } else if (currentTurn == 2) {
                 $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
                 $("#" + endCell).removeClass("gameboard-player");
-                $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                $("#" + endCell).addClass("gameboard-enemy ");
                 $("#" + startCell).html("");
                 $("#" + endCell).html(startPiece);
             }
@@ -441,7 +442,7 @@ class PlayPhase {
                 $("#" + startCell).html("");
             } else if (currentTurn == 2) {
                 $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
-                $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                $("#" + endCell).addClass("gameboard-enemy");
                 $("#" + startCell).html("");
             }
             return true;
@@ -470,7 +471,7 @@ class PlayPhase {
                     $("#" + startCell).html("");
                 } else if (Number(startPiece) > Number(endPiece)) {
                     $("#" + startCell).removeClass("gameboard-enemy gameboard-transparent");
-                    $("#" + endCell).addClass("gameboard-enemy gameboard-transparent");
+                    $("#" + endCell).addClass("gameboard-enemy");
                     $("#" + startCell).html("");
                     $("#" + endCell).html(startPiece);
                 } else {
@@ -484,59 +485,19 @@ class PlayPhase {
         }
         return false;
     }
+
+    findPieces() {
+
+    }
+
     aiTurn() {
-        var moveSuccess = 0;
-
-        // check available pieces in each row
-        var availablePieces = "";
-        for (var row = 10; row <= 1; row--) {
-
-            // if AI move is successful break out of loop to stop searching
-            if (moveSuccess == 1) {
-                break;
-            }
-
-            // check each row for available pieces
-            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                if ($("#" + row + column).hasClass("gameboard-enemy") && $("#" + row + column).html() != "") {
-
-                    availablePieces = availablePieces.concat($("#" + row + column).html());
-                }
-            }
-
-            // continuously select a random piece from available pieces to see if a move is possible
-            var move = 0;
-            while (move == 0) {
-
-                //move(startCell, endCell, startPiece, endPiece, startPieceTeam, endPieceTeam, currentTurn)
-
-                var piece = availablePieces.charAt(Math.floor(Math.random() * availabePieces.length));
-                // if move successful set the variables, so that loop breaks out on next iteration
-                if (move()) {
-                    move = 1;
-                    moveSuccess == 1;
-
-                } else {
-                    // else remove piece from available pieces and try another pieces
-                    availablePieces = availablePieces.remove(piece, "");
-                }
-            }
-
-            // reset the availablePieces for next loop iteration
-            availablePieces = "";
-
-        }
-
 
     }
 
     attemptEndGame() {
-        /** Conditions for winning the game.
-         The enemy flag is destroyed.
-         If all your movable pieces have been removed and you cannot move or attack on a turn, you lose.
-
-         **/
-
+        //Conditions for winning the game. 
+        // The enemy flag is destroyed. 
+        // If all your movable pieces have been removed and you cannot move or attack on a turn, you lose.
 
         var playerFlag = 0;
         var aiFlag = 0;
@@ -601,34 +562,61 @@ class PlayPhase {
                 }
             }
         }
+        // else {
+        //     // if both flags are still present check for other win conditions
+
+        //     // check if all ur moveable pieces have been removed and you cannot attack move or attack on a turn
+        //     for (var row = 1; row <= 10; row++) {
+        //         for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+        //             var piece = $("#" + row + column).html();
+        //             if (piece != "F" && piece != "B" && piece != "") {
+        //                 if ($("#" + row + column).hasClass("gameboard-player")) {
+        //                     playerMovablePieces = 1;
+        //                 } else if ($("#" + row + column).hasClass("gameboard-enemy")) {
+        //                     aiMovablePieces = 1;
+        //                 }
+        //             }
+        //         }
+        //     }
+
+        // }
+        return false;
     }
 
     finishPhase(team) {
         game.history.winner = team;
-        game.phase = new EndPhase(this);
-    }
-}
-class EndPhase {
-    constructor() {
         game.sendGameData();
+        game.finished = true;
+        if (team == 2) {
+            // AI won
+            $('#gameEndsModal').modal('show');
+            $('#gameEndsModalBodyLabel').append("You Lost!");
+        } else if (team == 1) {
+            // player won
+            $('#gameEndsModal').modal('show');
+            $('#gameEndsModalBodyLabel').append('Congratulation! You Won!');
+        } else {
+            $('#gameEndsModal').modal('show');
+            $('#gameEndsModalBodyLabel').append('Its a draw!');
+        }
     }
 }
 //When everything has finished loading we add the board to the DOM then start our javascript game code.
-$(document).ready(function () {
+$(document).ready(function() {
     createGameBoard();
     startGame();
 
-    $("#backward").click(function () {
+    $("#backward").click(function() {
         console.log("BACKWARD");
     });
 
-    $("#forward").click(function () {
+    $("#forward").click(function() {
         console.log("FORWARD");
     });
 
     $('#gameEndsModal').modal('hide');
 
-    $("#autoSetup").click(function () {
+    $("#autoSetup").click(function() {
         this.keyTracker = {};
         this.keyTracker["F"] = 1;
         this.keyTracker["B"] = 6;
@@ -662,7 +650,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#autoplay").click(function () {
+    $("#autoplay").click(function() {
 
     });
 });
