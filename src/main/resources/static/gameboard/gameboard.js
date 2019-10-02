@@ -745,14 +745,6 @@ $(document).ready(function() {
     createGameBoard();
     startGame();
 
-    $("#backward").click(function() {
-        console.log("BACKWARD");
-    });
-
-    $("#forward").click(function() {
-        console.log("FORWARD");
-    });
-
     $('#gameEndsModal').modal('hide');
 
     $("#autoSetup").click(function() {
