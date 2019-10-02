@@ -115,21 +115,23 @@ strong {
 }
 
 .instruction {
-    width: 320px;
+    width: 340px;
     font-size: 14px;
     margin: 0px 20px 0px 20px;
 }
 
 .move-history {
-    width: 320px;
+    width: 340px;
     margin: 0px 20px 0px 20px;
     overflow: hidden;
+    text-align: center;
 }
 
 .past-games-list {
     min-width: 250px;
     margin: 0px 20px 0px 20px;
     overflow: hidden;
+    text-align: center;
 }
 
 .move-history table,
@@ -142,7 +144,7 @@ strong {
 
 .move-history table thead,
 .past-games-list table thead {
-    font-size: 20px;
+    font-size: 16px;
     color: #999999;
 }
 
@@ -153,7 +155,7 @@ strong {
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
     border: 0;
     background-color: #333333;
-    font-size: 20px;
+    font-size: 16px;
     color: white;
 }
 
