@@ -549,45 +549,50 @@ class PlayPhase {
 
         var temp = [];
         while (output.length > 0) {
-            temp.push(output.splice(Math.random() * output.length)[0], 1);
+            temp.push(output.splice(Math.random() * output.length, 1)[0]);
         }
         return temp;
     }
 
     aiTurn() {
-        for (var row = 10; row >= 1; row--) {
-            for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
-                //Find the first piece that can be moved. 
-                var piece = $("#" + row + column).html();
+        var passedPieces = [];
+        while (passedPieces.length <= 40) {
 
-                if ($("#" + row + column).hasClass("gameboard-enemy") && piece != "" && piece != "B" && piece != "F") {
+            var row = Math.floor(Math.random() * 10);
+            var column = String.fromCharCode("A".charCodeAt(0) + Math.floor(Math.random() * 10));
+            if (passedPieces.includes(row + column)) {
+                continue;
+            } else {
+                passedPieces.push(row + column);
+            }
+            //Find the first piece that can be moved. 
+            var piece = $("#" + row + column).html();
 
-                    var possibleMoves = game.phase.listValidMoves(row + column, piece);
+            if ($("#" + row + column).hasClass("gameboard-enemy") && piece != "" && piece != "B" && piece != "F") {
 
-                    for (var i = 0; i < possibleMoves.length; i++) {
-                        var startCell = row + column;
-                        var endCell = possibleMoves[i];
-                        var startPiece = piece;
-                        var endPiece = $("#" + possibleMoves[i]).html();
-                        var startOwningPlayer = game.getOwningPlayer(row + column);
-                        var endOwningPlayer = game.getOwningPlayer(possibleMoves[i]);
-                        var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
+                var possibleMoves = game.phase.listValidMoves(row + column, piece);
 
-                        if (moveSucessful) {
-
-                            game.phase.saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
-                            return true;
-                        }
+                for (var i = 0; i < possibleMoves.length; i++) {
+                    var startCell = row + column;
+                    var endCell = possibleMoves[i];
+                    var startPiece = piece;
+                    var endPiece = $("#" + possibleMoves[i]).html();
+                    var startOwningPlayer = game.getOwningPlayer(row + column);
+                    var endOwningPlayer = game.getOwningPlayer(possibleMoves[i]);
+                    var moveSucessful = game.phase.move(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
+                    if (moveSucessful) {
+                        game.phase.saveMove(startCell, endCell, startPiece, endPiece, startOwningPlayer, endOwningPlayer, 2);
+                        return true;
                     }
-                    //We found valid pliece
-                    //Determine if theres a good palce to move it. 
-                    //First search if 
-                    // if () {
-
-                    // }
                 }
             }
         }
+
+        // for (var row = 4; row >= 1; row--) {
+        //     for (var column = "A"; column != "K"; column = String.fromCharCode(column.charCodeAt(0) + 1)) {
+
+        //     }
+        // }
     }
 
     attemptEndGame() {
