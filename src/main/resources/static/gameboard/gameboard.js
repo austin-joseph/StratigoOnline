@@ -330,15 +330,25 @@ class PlayPhase {
         if ($("#" + endCell).html() == startPiece) {
             deadPiece = endPiece;
             deadPieceTeam = pieceTwoTeam;
-        } else {
+        } 
+        else  if (startPiece == endPiece ) {
+            deadPiece = endPiece;
+            deadPieceTeam = 3;
+        }
+        else {
             deadPiece = startPiece;
             deadPieceTeam = pieceOneTeam
         }
+        
         if (deadPiece != "") {
             if (deadPieceTeam = 1) {
                 game.history.userPiecesLost.push(deadPiece);
             }
-            else {
+            else if (deadPieceTeam = 2) {
+                game.history.aiPiecesLost.push(deadPiece);
+            }
+            else if (deadPieceTeam = 3) {
+                game.history.userPiecesLost.push(deadPiece);
                 game.history.aiPiecesLost.push(deadPiece);
             }
         }
