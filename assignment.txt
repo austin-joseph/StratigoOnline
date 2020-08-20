@@ -1,7 +1,0 @@
-Repo:
-
-https://github.com/austinobejo/darkpurple_hw1
-
-Deployed Code
-
-https://delta-compass-254301.appspot.com/
