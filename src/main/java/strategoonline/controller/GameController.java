@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package darkpurple.hw1.controller;
+package strategoonline.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import darkpurple.hw1.entity.Game;
-import darkpurple.hw1.entity.User;
-import darkpurple.hw1.service.GameService;
-import darkpurple.hw1.repository.GameRepository;
-import darkpurple.hw1.service.CustomUserDetailsService;
+import strategoonline.entity.Game;
+import strategoonline.entity.User;
+import strategoonline.service.GameService;
+import strategoonline.repository.GameRepository;
+import strategoonline.service.CustomUserDetailsService;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;

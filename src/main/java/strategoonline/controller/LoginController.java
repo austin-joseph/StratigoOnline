@@ -1,7 +1,7 @@
-package darkpurple.hw1.controller;
+package strategoonline.controller;
 
-import darkpurple.hw1.entity.User;
-import darkpurple.hw1.service.CustomUserDetailsService;
+import strategoonline.entity.User;
+import strategoonline.service.CustomUserDetailsService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import darkpurple.hw1.repository.GameRepository;
+import strategoonline.repository.GameRepository;
 
 @Controller
 public class LoginController {

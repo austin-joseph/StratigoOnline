@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package darkpurple.hw1.service;
+package strategoonline.service;
 
 /**
  *
  * @author edmundliang
  */
-import darkpurple.hw1.entity.Role;
-import darkpurple.hw1.entity.User;
-import darkpurple.hw1.repository.RoleRepository;
-import darkpurple.hw1.repository.UserRepository;
+import strategoonline.entity.Role;
+import strategoonline.entity.User;
+import strategoonline.repository.RoleRepository;
+import strategoonline.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import darkpurple.hw1.repository.GameRepository;
+import strategoonline.repository.GameRepository;
 
 
 

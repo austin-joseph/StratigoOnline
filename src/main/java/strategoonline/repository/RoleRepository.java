@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package darkpurple.hw1.repository;
-import darkpurple.hw1.entity.Game;
+package strategoonline.repository;
+
+/**
+ *
+ * @author edmundliang
+ */
+import strategoonline.entity.Role;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+public interface RoleRepository extends MongoRepository<Role, String> {
 
-public interface GameRepository extends MongoRepository<Game, String> {
-    
-    Game findBygameID(String gameID);
-    
+    Role findByRole(String role);
 }

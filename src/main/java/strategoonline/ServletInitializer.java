@@ -1,4 +1,4 @@
-package darkpurple.hw1;
+package strategoonline;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

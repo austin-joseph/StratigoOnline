@@ -1,7 +1,7 @@
-package darkpurple.hw1.config;
+package strategoonline.config;
 
-import darkpurple.hw1.service.CustomUserDetailsService;
-import darkpurple.hw1.service.GameService;
+import strategoonline.service.CustomUserDetailsService;
+import strategoonline.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

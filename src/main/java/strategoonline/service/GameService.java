@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package darkpurple.hw1.service;
+package strategoonline.service;
 
-import darkpurple.hw1.entity.Game;
-import darkpurple.hw1.entity.User;
-import darkpurple.hw1.repository.GameRepository;
-import darkpurple.hw1.repository.UserRepository;
+import strategoonline.entity.Game;
+import strategoonline.entity.User;
+import strategoonline.repository.GameRepository;
+import strategoonline.repository.UserRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

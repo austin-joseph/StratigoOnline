@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package darkpurple.hw1.repository;
+package strategoonline.repository;
 
-import darkpurple.hw1.entity.User;
+import strategoonline.entity.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

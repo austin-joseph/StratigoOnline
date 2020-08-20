@@ -1,4 +1,4 @@
-package darkpurple.hw1.config;
+package strategoonline.config;
 
         import org.springframework.context.annotation.Bean;
         import org.springframework.context.annotation.Configuration;
