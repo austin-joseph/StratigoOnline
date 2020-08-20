@@ -1,1 +1,1 @@
-docker exec -it strategoonline bash
+docker exec -it militaryboardgame bash

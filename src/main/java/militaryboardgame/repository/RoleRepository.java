@@ -1,6 +1,6 @@
-package strategoonline.repository;
+package militaryboardgame.repository;
 
-import strategoonline.entity.Role;
+import militaryboardgame.entity.Role;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface RoleRepository extends MongoRepository<Role, String> {

@@ -1,4 +1,4 @@
-package strategoonline.entity;
+package militaryboardgame.entity;
 
 import org.springframework.data.annotation.Id;
 import java.util.Set;

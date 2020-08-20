@@ -1,8 +1,8 @@
-package strategoonline;
+package militaryboardgame;
 
-import strategoonline.entity.Role;
-import strategoonline.repository.GameRepository;
-import strategoonline.repository.RoleRepository;
+import militaryboardgame.entity.Role;
+import militaryboardgame.repository.GameRepository;
+import militaryboardgame.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import strategoonline.repository.GameRepository;
+import militaryboardgame.repository.GameRepository;
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {

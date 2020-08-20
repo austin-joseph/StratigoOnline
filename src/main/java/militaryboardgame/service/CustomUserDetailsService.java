@@ -1,9 +1,9 @@
-package strategoonline.service;
+package militaryboardgame.service;
 
-import strategoonline.entity.Role;
-import strategoonline.entity.User;
-import strategoonline.repository.RoleRepository;
-import strategoonline.repository.UserRepository;
+import militaryboardgame.entity.Role;
+import militaryboardgame.entity.User;
+import militaryboardgame.repository.RoleRepository;
+import militaryboardgame.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import strategoonline.repository.GameRepository;
+import militaryboardgame.repository.GameRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

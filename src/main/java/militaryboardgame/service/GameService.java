@@ -1,9 +1,9 @@
-package strategoonline.service;
+package militaryboardgame.service;
 
-import strategoonline.entity.Game;
-import strategoonline.entity.User;
-import strategoonline.repository.GameRepository;
-import strategoonline.repository.UserRepository;
+import militaryboardgame.entity.Game;
+import militaryboardgame.entity.User;
+import militaryboardgame.repository.GameRepository;
+import militaryboardgame.repository.UserRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

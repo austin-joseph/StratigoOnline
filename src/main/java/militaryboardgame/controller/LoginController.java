@@ -1,7 +1,7 @@
-package strategoonline.controller;
+package militaryboardgame.controller;
 
-import strategoonline.entity.User;
-import strategoonline.service.CustomUserDetailsService;
+import militaryboardgame.entity.User;
+import militaryboardgame.service.CustomUserDetailsService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;

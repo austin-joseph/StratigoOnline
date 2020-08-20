@@ -1,1 +1,1 @@
-docker build -t strategoonline .
+docker build -t militaryboardgame .

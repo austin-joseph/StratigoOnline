@@ -1,11 +1,11 @@
-package strategoonline.controller;
+package militaryboardgame.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import strategoonline.entity.Game;
-import strategoonline.entity.User;
-import strategoonline.service.GameService;
-import strategoonline.service.CustomUserDetailsService;
+import militaryboardgame.entity.Game;
+import militaryboardgame.entity.User;
+import militaryboardgame.service.GameService;
+import militaryboardgame.service.CustomUserDetailsService;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

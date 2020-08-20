@@ -1,4 +1,4 @@
-package strategoonline.config;
+package militaryboardgame.config;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

@@ -1,1 +1,1 @@
-docker rm strategoonline
+docker rm militaryboardgame

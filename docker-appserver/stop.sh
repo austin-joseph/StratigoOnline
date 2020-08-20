@@ -1,1 +1,1 @@
-docker stop strategoonline
+docker stop militaryboardgame
