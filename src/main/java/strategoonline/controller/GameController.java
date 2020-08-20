@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package strategoonline.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,14 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import strategoonline.entity.Game;
 import strategoonline.entity.User;
 import strategoonline.service.GameService;
-import strategoonline.repository.GameRepository;
 import strategoonline.service.CustomUserDetailsService;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,29 +15,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author anilramsoomye
- * 
- */
-
-
-
-
-
 @RestController
 public class GameController {
-    
-    
+
     @Autowired
     private GameService gameService;
-        
+
     @Autowired
     private CustomUserDetailsService userService;
-    
+
     @Autowired
     HttpSession session;
-    
+
     @RequestMapping(value = "/dashboard", method = RequestMethod.POST)
     public Game createNewGame() {
 
@@ -58,7 +37,7 @@ public class GameController {
         return game;
     }
 
-    @RequestMapping(value = "/getgames", method = RequestMethod.POST )
+    @RequestMapping(value = "/getgames", method = RequestMethod.POST)
     public String getPlayerGames() {
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(gameService.getPlayerGames(userService.getLoggedUser()));
@@ -70,18 +49,15 @@ public class GameController {
             return "Error";
         }
     }
-    
+
     @RequestMapping(value = "/recordGame", method = RequestMethod.POST)
     public Game createGame(@RequestBody String jsonText) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-                
+
         Game game = gameService.addGame(user.getEmail(), jsonText);
         System.out.print(jsonText);
         return game;
     }
-    
-
 
 }
-

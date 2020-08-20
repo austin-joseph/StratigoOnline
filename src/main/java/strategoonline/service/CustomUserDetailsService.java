@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package strategoonline.service;
 
-/**
- *
- * @author edmundliang
- */
 import strategoonline.entity.Role;
 import strategoonline.entity.User;
 import strategoonline.repository.RoleRepository;
@@ -31,8 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import strategoonline.repository.GameRepository;
 
-
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -45,8 +34,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private GameRepository gameInfoRepository;
 
-    
-
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -58,7 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
-    
+
     public User getLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByEmail(authentication.getName());

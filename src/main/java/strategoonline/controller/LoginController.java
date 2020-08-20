@@ -15,32 +15,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import strategoonline.repository.GameRepository;
 
 @Controller
 public class LoginController {
 
     @Autowired
     protected CustomUserDetailsService userService;
-    
-
-
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
-        
+
         //CHECK IF USER IS ALREADY LOGGED IN IF SO REDIRECT TO PLAYER PAGE
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ModelAndView modelAndView = new ModelAndView();
-        
+
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             return new ModelAndView("redirect:/player");
         } else {
             modelAndView.setViewName("login");
         }
-        
+
         return modelAndView;
     }
+
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView signup() {
         ModelAndView modelAndView = new ModelAndView();
@@ -49,43 +46,44 @@ public class LoginController {
         modelAndView.setViewName("signup");
         return modelAndView;
     }
+
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
-	ModelAndView modelAndView = new ModelAndView();
-	User userExists = userService.findUserByEmail(user.getEmail());
-	if (userExists != null) {
-	    bindingResult
-		    .rejectValue("email", "error.user",
-			    "There is already a user registered with the username provided");
-	}
-	if (bindingResult.hasErrors()) {
-	    modelAndView.setViewName("signup");
-	} else {
-	    userService.saveUser(user);
-	    modelAndView.addObject("successMessage", "User has been registered successfully");
-	    modelAndView.addObject("user", new User());
-	    modelAndView.setViewName("login");
+        ModelAndView modelAndView = new ModelAndView();
+        User userExists = userService.findUserByEmail(user.getEmail());
+        if (userExists != null) {
+            bindingResult
+                    .rejectValue("email", "error.user",
+                            "There is already a user registered with the username provided");
+        }
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("signup");
+        } else {
+            userService.saveUser(user);
+            modelAndView.addObject("successMessage", "User has been registered successfully");
+            modelAndView.addObject("user", new User());
+            modelAndView.setViewName("login");
 
-	}
-	return modelAndView;
+        }
+        return modelAndView;
     }
 
     @RequestMapping(value = "/player", method = RequestMethod.GET)
     public ModelAndView dashboard() {
-	ModelAndView modelAndView = new ModelAndView();
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	User user = userService.findUserByEmail(auth.getName());
-	modelAndView.addObject("currentUser", user);
-	modelAndView.addObject("email", "Welcome " + user.getEmail());
-	modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-	modelAndView.setViewName("player");
-	return modelAndView;
-    }
-    
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){   
+        User user = userService.findUserByEmail(auth.getName());
+        modelAndView.addObject("currentUser", user);
+        modelAndView.addObject("email", "Welcome " + user.getEmail());
+        modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
+        modelAndView.setViewName("player");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/login?logout=true";
@@ -98,8 +96,7 @@ public class LoginController {
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             return new ModelAndView("redirect:/player");
-        }
-        else {
+        } else {
             modelAndView.setViewName("home");
         }
         return modelAndView;

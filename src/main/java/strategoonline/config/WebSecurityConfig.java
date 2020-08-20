@@ -1,7 +1,6 @@
 package strategoonline.config;
 
 import strategoonline.service.CustomUserDetailsService;
-import strategoonline.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService mongoUserDetails() {
         return new CustomUserDetailsService();
     }
-    
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -37,8 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
-                
-                
 
     }
 
